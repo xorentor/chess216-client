@@ -39,19 +39,12 @@ void sock_init( int *sd )
 	int portno;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
-	//char buffer[256];
-/*
-    if (argc < 3) {
-       fprintf(stderr,"usage %s hostname port\n", argv[0]);
-       exit(0);
-    }
-*/
-    	portno = 5777; //atoi(argv[2]);
+
+    	portno = 5777; 
     	*sd = socket(AF_INET, SOCK_STREAM, 0);
     	if( *sd < 0 ) 
         	printf("ERROR opening socket");
-//    	server = gethostbyname("localhost"); //gethostbyname(argv[1]);
-    	server = gethostbyname("217.41.55.16"); //gethostbyname(argv[1]);
+    	server = gethostbyname("localhost"); 
     	if (server == NULL) {
         	printf("ERROR, no such host\n");
         	exit(0);
@@ -62,28 +55,6 @@ void sock_init( int *sd )
     	serv_addr.sin_port = htons(portno);
     	if( connect( *sd,(struct sockaddr *)&serv_addr, sizeof(serv_addr) ) < 0 ) 
        		printf("ERROR connecting");
-
-//   printf("Please enter the message: ");
-
-//	while( true )
-//	{
-//    bzero(buffer,256);
-//    fgets(buffer,255,stdin);
-    //n = write(sockfd,buffer,strlen(buffer));
-/*    if (n < 0) 
-         error("ERROR writing to socket");
-	
-    bzero(buffer,256);
-    n = read(sockfd,buffer,255);
-    if (n < 0) 
-         error("ERROR reading from socket");
-    printf("%s\n",buffer);
-
-	}
-    close(sockfd);
-
-    return 0;
-*/
 }
 
 int gtk_init( Controller *controller )
@@ -208,11 +179,15 @@ void *listener_thread( void *controller )
 					}
 
 					if( (int )( (GameSitServerData_t *)pd.data )->gameBegin == CMD_GAME_BEGIN_PARAM_OK ) {
-						// set SDL input active here
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_BEGIN_PARAM_OK ); 
 					}
 					break;
 				case CMD_GAME_MOVEPIECE:
+					printf("color to move: %d\n", (int )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE );
+					if( (int )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE )
+						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_NEXTWHITE ); 
+					else
+						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_NEXTBLACK ); 
 					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate )
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE ); 
 					game.FinalMovePiece( (int )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (int )( (GamePieceMoveSrv_t *)pd.data )->xdest, (int )( (GamePieceMoveSrv_t *)pd.data )->ydest );

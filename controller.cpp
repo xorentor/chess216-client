@@ -180,7 +180,13 @@ void Controller::GTKSysMsg( const int &code )
 			break;
 		case CMD_GAME_PARAM_CHECKMATE:
 			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate." );
-
 			break;
+		case CMD_GAME_PARAM_NEXTWHITE:
+			gtk_entry_set_text( (GtkEntry *)systemMsg, "White to move" );
+			break;
+		case CMD_GAME_PARAM_NEXTBLACK:
+			gtk_entry_set_text( (GtkEntry *)systemMsg, "Black to move" );
+			break;
+
 	}
 }

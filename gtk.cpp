@@ -259,8 +259,9 @@ void GTK::LoginWindow()
 
 void GTK::Init( Controller *controller ) 
 {
-	int argc;
+	int argc = 0;
 	char **argv;
+	argv[ 0 ] = "";
 
 	this->controller = controller;
 
@@ -276,4 +277,5 @@ void GTK::Init( Controller *controller )
 	controller->SetGameName( buttonGamename );
 	controller->SetPlayer1( buttonPlayer1 );
 	controller->SetPlayer2( buttonPlayer2 );
+
 }

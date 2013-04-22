@@ -35,6 +35,8 @@ enum {
         CMD_GAME_JOIN_PARAM_NOK,
 	CMD_GAME_BEGIN_PARAM_OK,
 	CMD_GAME_PARAM_CHECKMATE,
+	CMD_GAME_PARAM_NEXTWHITE,
+	CMD_GAME_PARAM_NEXTBLACK,
 };
 
 enum
@@ -88,6 +90,7 @@ typedef struct GamePieceMoveSrv_s
         char xdest;
         char ydest;
 	char checkMate;
+	char next;
 } GamePieceMoveSrv_t;
 
 typedef struct JoinData_s
