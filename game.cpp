@@ -7,6 +7,7 @@
 #include "client.h"
 #include "controller.h"
 #include "game.h"
+#include "sha256.h"
 
 Game::Game() 
 {
@@ -64,6 +65,23 @@ const bool Game::Init(  SDL_Rect **skins, Controller *controller )
 	AddPiece( listPieces, i++, 4, 0, BLACK_KING, COLOR_BLACK );
 
 	return true;
+}
+
+void Game::SrvInitPieces( char *data )
+{
+	int index = 0;
+
+	for( int i = 0; i < 32; i++ )
+	{
+		listPieces[ i ]->xpos = data[ index ];
+		listPieces[ i ]->x = data[ index++ ] * BOARD_SQUARE_WH;
+		listPieces[ i ]->ypos = data[ index ];
+		listPieces[ i ]->y = data[ index++ ] * BOARD_SQUARE_WH;
+		//listPieces[ i ]->ID = data[ index++ ];
+		index++;
+		listPieces[ i ]->skinID = data[ index++ ];
+		listPieces[ i ]->inPlay = data[ index++ ] & 0x1 ? true : false;
+	}
 }
 
 bool Game::CheckMove( Piece_t *piece, const int &xdest, const int &ydest )

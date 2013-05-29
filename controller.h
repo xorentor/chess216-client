@@ -12,6 +12,7 @@ public:
 	void ClientLogin( const char *user, const char *pass );
 	void ClientGameCreate();
 	void ClientPlayerSit( const int &side );
+	void ClientPlayerStand( const int &side );
 	void MovePiece( const int &xsrc, const int &ysrc, const int &xdest, const int &ydest );
 
 	int Stop() { return quit; }
@@ -38,6 +39,7 @@ public:
 	void GTKSetPlayer1( const char *player );
 	void GTKSetPlayer2( const char *player );
 	void GTKSetButtonSitActive();
+	void GTKRemoveGameListItem( const char *str, void *byte );
 
 private:
 	Client client;
@@ -59,6 +61,7 @@ private:
 	MovePieceData_t md;
 
 	void StoreGame( const char *str, void *byte );
+	void RemoveGame( const char *str, void *byte );
 
 	// gtk
 	int *gamesListItem;

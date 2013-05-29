@@ -10,10 +10,12 @@
 #include "common.h"
 #include "client.h"
 #include "controller.h"
+#include "sha256.h"
 
 Controller::Controller()
 {
 	quit = 0;
+	memset( games, 0, sizeof( games ) );
 }
 
 Controller::~Controller()
@@ -36,11 +38,18 @@ void Controller::ClientLogin( const char *user, const char *pass )
 	memcpy( output + 1, user, strlen( user ) );
 	memcpy( output + 33, pass, strlen( pass ) );
 */
+
+        unsigned char hashpass[ 32 ];
+        SHA256_CTX ctx;
+        sha256_init( &ctx );
+        sha256_update( &ctx, (unsigned char *)pass, strlen( pass ) );
+        sha256_final( &ctx, hashpass );
+
 	pd.command = (char )CMD_LOGIN;
 
 	pd.data = &ld;
 	memcpy( &ld.username, user, strlen( user ) );
-	memcpy( &ld.password, pass, strlen( pass ) );
+	memcpy( &ld.password, hashpass, sizeof( hashpass ) );
 
 	client.Send( socketDesc, &pd );
 }
@@ -67,6 +76,30 @@ void Controller::GTKAppendGameListItem( const char *str, void *byte )
   	gtk_list_store_set( store, &iter, *gamesListItem, str, -1 );
 }
 
+void Controller::GTKRemoveGameListItem( const char *str, void *byte )
+{
+	printf( "remove game %s\n", str );
+	/*
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+
+	RemoveGame( str, byte );
+
+	printf( "gamename: %s\n", str );
+	model = gtk_tree_view_get_model( (GtkTreeView *)list );
+        if( !gtk_tree_model_get_iter_from_string( model, &iter, str ) )
+                printf("no game iter\n");
+
+
+	/*	
+  	store = GTK_LIST_STORE( gtk_tree_view_get_model( GTK_TREE_VIEW( list ) ) );
+	if( !gtk_tree_model_get_iter_from_string( (GtkTreeModel *)store, &iter, str ) )
+		printf("no game iter\n");
+  	gtk_list_store_remove( store, &iter );
+	*/
+  	//gtk_list_store_set( store, &iter, *gamesListItem, str, -1 );
+}
+
 void Controller::MovePiece( const int &xsrc, const int &ysrc, const int &xdest, const int &ydest )
 {
 	memset( &pd, 0, sizeof( pd ) );
@@ -86,10 +119,22 @@ void Controller::MovePiece( const int &xsrc, const int &ysrc, const int &xdest, 
 void Controller::StoreGame( const char *str, void *byte )
 {
 	for( int i = 0; i < MAX_GAMES; i++ ) {
-		if( games[ i ].id < 1 ) {
+		if( games[ i ].id == 0 ) {
 			games[ i ].id = (int) *(char*)byte;
-			memcpy( &games[ i ].value, &str, strlen( str ) );
+			memcpy( &games[ i ].value, str, strlen( str ) );
 			return;
+		}
+	}
+}
+
+void Controller::RemoveGame( const char *str, void *byte )
+{
+	for( int i = 0; i < MAX_GAMES; i++ ) {
+		if( games[ i ].id > 0 ) {
+			if( games[ i ].id == (int ) *(char *)byte ) {
+				memset( &games[ i ], 0, sizeof( Game_t ) );
+				return;
+			}
 		}
 	}
 }
@@ -107,24 +152,26 @@ void Controller::ClientPlayerSit( const int &side )
 	client.Send( socketDesc, &pd );
 }
 
+void Controller::ClientPlayerStand( const int &side )
+{
+	memset( &pd, 0, sizeof( pd ) );
+	memset( &sd, 0, sizeof( sd ) );
+	pd.data = &sd;
+
+	pd.command = (char )CMD_GAME_STAND;
+	sd.gameId = currentGameId;
+	sd.slot = (char )side;
+	
+	client.Send( socketDesc, &pd );
+}
+
 void Controller::GTKJoinGame( const char *row )
 {
 	for( int i = 0; i < MAX_GAMES; i++ ) {
-		if( games[ i ].id < 1 )
+		if( games[ i ].id == 0 )
 			continue;
-
 		if( strcmp( games[ i ].value, row ) == 0 ) {
 			printf("found game %d\n", games[ i ].id );	
-/*
-			char command;
-
-			command = (char )CMD_GAME_JOIN;
-			memset( output, 0, sizeof( output ) );
-
-			memcpy( output, &command, sizeof( command ) );
-	
-			client.Send( socketDesc, output );
-*/
 			memset( &pd, 0, sizeof( pd ) );
 			memset( &jd, 0, sizeof( jd ) );
 			pd.data = &jd;
@@ -148,13 +195,13 @@ void Controller::GTKSetGamename( const char *gameName, void *gameId )
 void Controller::GTKSetPlayer1( const char *player )
 {
 	gtk_button_set_label( (GtkButton *)buttonPlayer1, player );
-	gtk_widget_set_sensitive( buttonPlayer1, FALSE );
+	//gtk_widget_set_sensitive( buttonPlayer1, FALSE );
 }
 
 void Controller::GTKSetPlayer2( const char *player )
 {
 	gtk_button_set_label( (GtkButton *)buttonPlayer2, player );
-	gtk_widget_set_sensitive( buttonPlayer2, FALSE );
+	//gtk_widget_set_sensitive( buttonPlayer2, FALSE );
 }
 
 void Controller::GTKSetButtonSitActive()

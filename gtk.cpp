@@ -9,6 +9,7 @@
 #include "client.h"
 #include "controller.h"
 #include "gtk.h"
+#include "sha256.h"
 
 // these must stand out of class, 
 // because GTK cannot access them as class members through static cast ( or can it? )
@@ -48,12 +49,20 @@ void GTK::Destroy( void *gtk )
 
 void GTK::Player1Sit( void *gtk )
 {
-	GTK::controller->ClientPlayerSit( COLOR_WHITE );	
+	const gchar *text = gtk_button_get_label( (GtkButton *)buttonPlayer1 );
+	if( strcmp( text, "Sit" ) == 0 ) 
+		GTK::controller->ClientPlayerSit( COLOR_WHITE );	
+	else
+		GTK::controller->ClientPlayerStand( COLOR_WHITE );	
 }
 
 void GTK::Player2Sit( void *gtk )
 {
-	GTK::controller->ClientPlayerSit( COLOR_BLACK );	
+	const gchar *text = gtk_button_get_label( (GtkButton *)buttonPlayer2 );
+	if( strcmp( text, "Sit" ) == 0 )
+		GTK::controller->ClientPlayerSit( COLOR_BLACK );	
+	else
+		GTK::controller->ClientPlayerStand( COLOR_BLACK );	
 }
 
 void GTK::Login( void *gtk ) {

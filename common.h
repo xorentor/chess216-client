@@ -24,6 +24,8 @@ enum {
         CMD_GAME_JOIN,                  
 	CMD_GAME_SIT,
 	CMD_GAME_MOVEPIECE,
+	CMD_GAME_INITIAL_PIECES,
+	CMD_GAME_STAND,
 };
 
 enum {
@@ -37,6 +39,9 @@ enum {
 	CMD_GAME_PARAM_CHECKMATE,
 	CMD_GAME_PARAM_NEXTWHITE,
 	CMD_GAME_PARAM_NEXTBLACK,
+	CMD_GAME_CREATE_PARAM_DELETE,
+	CMD_GAME_STAND_PARAM_OK,
+	CMD_GAME_STAND_PARAM_NOK,
 };
 
 enum
@@ -67,7 +72,7 @@ extern int quit;
 typedef struct Game_s
 {
 	int id;
-	const char *value;
+	char value[ 32 ];
 } Game_t;
 
 typedef struct LoginData_s
@@ -110,6 +115,18 @@ typedef struct GameSitServerData_s
 	char username[ 32 ];
 	char gameBegin;
 } GameSitServerData_t;
+
+typedef struct GameStandServerData_s
+{
+        char param;
+        char slot;
+} GameStandServerData_t;
+
+typedef struct GameStandData_s
+{
+        char gameId;
+        char slot;
+} GameStandData_t;
 
 typedef struct PacketData_s
 {

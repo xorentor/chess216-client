@@ -38,6 +38,7 @@ public:
 	Piece_t **GetPieces() { return listPieces; };
 	void MouseInput( const int &x, const int &y );
 	const bool Init( SDL_Rect**, Controller *controller );	
+	void SrvInitPieces( char *data );
 	void FinalMovePiece( const int &p, const int &x, const int &y );
 private:
 	bool CheckMove( Piece_t *piece, const int &xdest, const int &ydest );

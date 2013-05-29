@@ -53,6 +53,11 @@ int Client::Send( const int *sd, PacketData_t *pd )
 			memcpy( output + initLen + 2, &( (MovePieceData_t *)pd->data )->xdest, sizeof( ( (MovePieceData_t *)pd->data )->xdest ) );
 			memcpy( output + initLen + 3, &( (MovePieceData_t *)pd->data )->ydest, sizeof( ( (MovePieceData_t *)pd->data )->ydest ) );
 			break;
+		case CMD_GAME_STAND:
+			memcpy( output + initLen, &( (GameStandData_t *)pd->data )->gameId, sizeof( ( (GameStandData_t *)pd->data )->gameId ) );
+			memcpy( output + initLen + sizeof( ( (GameStandData_t *)pd->data )->gameId ), &( (GameStandData_t *)pd->data )->slot, sizeof( ( (GameStandData_t *)pd->data )->slot ) );
+			printf("stand client.cpp\n");	
+			break;
 	}
 
 	n = write( *sd, output, BUFFER_LEN );

@@ -22,6 +22,7 @@
 #include "game.h"
 #include "gtk.h"
 #include "gfx.h"
+#include "sha256.h"
 
 GFX gfx;
 SDL_Event event;
@@ -160,6 +161,13 @@ void *listener_thread( void *controller )
 						( (Controller *)controller )->GTKAppendGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_CREATE_PARAM_OK ); 
 					} 
+					else if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_CREATE_PARAM_DELETE ) {
+						printf("delete game %d\n", (int )((ServerTwoBytes_t *)pd.data )->byte1 );
+						char gamename[ 0x20 ];
+						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
+						( (Controller *)controller )->GTKRemoveGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
+	
+}	
 					break;
 				case CMD_GAME_JOIN:
 					if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) {
@@ -167,7 +175,7 @@ void *listener_thread( void *controller )
 						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 );
 						( (Controller *)controller )->GTKSetGamename( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
 						( (Controller *)controller )->GTKSetButtonSitActive();
-					} 
+					} else { printf("param: %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) ; } 
 					break;
 				case CMD_GAME_SIT:
 					if( (int )( (GameSitServerData_t *)pd.data )->slot == COLOR_WHITE ) {
@@ -193,6 +201,20 @@ void *listener_thread( void *controller )
 					game.FinalMovePiece( (int )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (int )( (GamePieceMoveSrv_t *)pd.data )->xdest, (int )( (GamePieceMoveSrv_t *)pd.data )->ydest );
 					break;
 
+				case CMD_GAME_INITIAL_PIECES:
+					game.SrvInitPieces( (char *)pd.data );
+					break;
+
+				case CMD_GAME_STAND:
+ 					if( (int )( (GameStandServerData_t *)pd.data )->param == CMD_GAME_STAND_PARAM_OK ) {
+ 					if( (int )( (GameStandServerData_t *)pd.data )->slot == COLOR_WHITE ) {
+						( (Controller *)controller )->GTKSetPlayer1( "Sit" );
+					}
+					else if( (int )( (GameStandServerData_t *)pd.data )->slot == COLOR_BLACK ) {
+						( (Controller *)controller )->GTKSetPlayer2( "Sit" );
+					}
+					}
+					break;
 			}
 			printf("received %d\n", pd.command);
 	}

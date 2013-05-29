@@ -13,6 +13,7 @@
 #include "controller.h"
 #include "game.h"
 #include "gfx.h"
+#include "sha256.h"
 
 GFX::GFX()
 {
