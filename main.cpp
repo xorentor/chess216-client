@@ -148,7 +148,12 @@ void *listener_thread( void *controller )
 			switch( (int )pd.command ) {
 				case CMD_LOGIN:
 					if( (int )( (ServerByte_t *)pd.data )->byte == CMD_LOGIN_PARAM_DETAILS_OK ) {
-						( (Controller *)controller )->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_OK ); }
+						( (Controller *)controller )->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_OK ); 
+						( (Controller *)controller )->GTKLoggedUser( ( (GameLoginSrv_t *)pd.data )->username );
+
+				 		( (Controller *)controller )->GTKSetElo( ( ( GameLoginSrv_t *)pd.data )->elorating );
+						( (Controller *)controller )->GTKHideLogin();
+					}
 
 					else if( (int )( (ServerByte_t *)pd.data )->byte == CMD_LOGIN_PARAM_DETAILS_ERR ) {
 						( (Controller *)controller )->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_ERR ); }
@@ -196,8 +201,11 @@ void *listener_thread( void *controller )
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_NEXTWHITE ); 
 					else
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_NEXTBLACK ); 
-					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate )
-						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE ); 
+					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_W )
+						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_W ); 
+					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_B )
+						( (Controller *)controller )->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_B ); 
+
 					game.FinalMovePiece( (int )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (int )( (GamePieceMoveSrv_t *)pd.data )->xdest, (int )( (GamePieceMoveSrv_t *)pd.data )->ydest );
 					break;
 

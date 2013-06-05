@@ -36,12 +36,13 @@ enum {
         CMD_GAME_JOIN_PARAM_OK,
         CMD_GAME_JOIN_PARAM_NOK,
 	CMD_GAME_BEGIN_PARAM_OK,
-	CMD_GAME_PARAM_CHECKMATE,
 	CMD_GAME_PARAM_NEXTWHITE,
 	CMD_GAME_PARAM_NEXTBLACK,
 	CMD_GAME_CREATE_PARAM_DELETE,
 	CMD_GAME_STAND_PARAM_OK,
 	CMD_GAME_STAND_PARAM_NOK,
+	CMD_GAME_PARAM_CHECKMATE_W,
+	CMD_GAME_PARAM_CHECKMATE_B,
 };
 
 enum
@@ -145,3 +146,10 @@ typedef struct ServerTwoBytes_s
         char byte0;
         char byte1;
 } ServerTwoBytes_t;
+
+typedef struct GameLoginSrv_s
+{   
+         char param;
+         char username[ 32 ];
+         double elorating;
+} GameLoginSrv_t;

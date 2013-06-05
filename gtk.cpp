@@ -17,7 +17,7 @@
 GtkWidget *text_login, *text_pass;
 GtkWidget *listGames, *listSpectators;
 GtkTreeSelection *selection;
-GtkWidget *systemMsg, *buttonGamename;
+GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg;
 GtkWidget *buttonPlayer1, *buttonPlayer2;
 GtkWidget *gameWindow, *loginWindow;
 
@@ -108,7 +108,7 @@ void GTK::GameMenu()
 //  	GtkWidget *removeAll;
 
   	GtkWidget *vbox;
-  	GtkWidget *hbox;
+  	GtkWidget *hbox, *hbox1;
 	GtkWidget *vboxGames;
 
   	GtkWidget *separator;
@@ -134,10 +134,18 @@ void GTK::GameMenu()
 
   	vbox = gtk_vbox_new( FALSE, 0 );
 
-  	gtk_box_pack_start(GTK_BOX(vbox), sw, TRUE, TRUE, 0);
-
   	hbox = gtk_hbox_new( TRUE, 5 );
+  	hbox1 = gtk_hbox_new( TRUE, 5 );
 	vboxGames = gtk_vbox_new( TRUE, 5 );
+
+	loggedMsg = gtk_entry_new();
+	eloMsg = gtk_entry_new();
+
+	gtk_box_pack_start(GTK_BOX(hbox1), loggedMsg, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(hbox1), eloMsg, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, TRUE, 3);
+
+  	gtk_box_pack_start(GTK_BOX(vbox), sw, TRUE, TRUE, 0);
 
   	buttonCreate = gtk_button_new_with_label("New Game");
   	buttonJoin = gtk_button_new_with_label("Join Game");
@@ -148,9 +156,8 @@ void GTK::GameMenu()
   	//gtk_box_pack_start(GTK_BOX(hbox), entry, FALSE, TRUE, 3);
   	gtk_box_pack_start(GTK_BOX(hbox), buttonJoin, FALSE, TRUE, 3);
   	//gtk_box_pack_start(GTK_BOX(hbox), removeAll, FALSE, TRUE, 3);
-
   	gtk_box_pack_start(GTK_BOX(vbox), hbox, FALSE, TRUE, 3);
-  	gtk_box_pack_start(GTK_BOX(vbox), vboxGames, FALSE, TRUE, 3);
+	gtk_box_pack_start(GTK_BOX(vbox), vboxGames, FALSE, TRUE, 3);
 
   	gtk_container_add(GTK_CONTAINER (sw), listGames);
   	gtk_container_add(GTK_CONTAINER (gameWindow), vbox);
@@ -159,6 +166,9 @@ void GTK::GameMenu()
 	
 	//separator = gtk_hseparator_new();
   	//gtk_box_pack_start(GTK_BOX(vboxGames), separator, FALSE, TRUE, 3);
+
+	gtk_entry_set_editable( (GtkEntry *)eloMsg, FALSE );
+	gtk_entry_set_editable( (GtkEntry *)loggedMsg, FALSE );
 
 	labelGamename = gtk_label_new( "Gamename:" );
   	gtk_box_pack_start(GTK_BOX(vboxGames), labelGamename, FALSE, TRUE, 3);
@@ -286,5 +296,7 @@ void GTK::Init( Controller *controller )
 	controller->SetGameName( buttonGamename );
 	controller->SetPlayer1( buttonPlayer1 );
 	controller->SetPlayer2( buttonPlayer2 );
-
+	controller->SetLoggedMsg( loggedMsg );
+	controller->SetEloMsg( eloMsg );
+	controller->SetLoginWindow( loginWindow );
 }

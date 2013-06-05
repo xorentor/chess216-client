@@ -29,17 +29,23 @@ public:
 	void SetGameName( GtkWidget *gameName ) { this->buttonGamename = gameName; };
 	void SetPlayer1( GtkWidget *player ) { this->buttonPlayer1 = player; };
 	void SetPlayer2( GtkWidget *player ) { this->buttonPlayer2 = player; };
+	void SetLoggedMsg( GtkWidget *loggedMsg ) { this->loggedMsg = loggedMsg; };
+	void SetEloMsg( GtkWidget *eloMsg ) { this->eloMsg = eloMsg; };
+	void SetLoginWindow( GtkWidget *loginWindow ) { this->loginWindow = loginWindow; };
 	void SetButtonSitActive();
 
 	// gtk
 	void GTKAppendGameListItem( const char *str, void *byte );
 	void GTKJoinGame( const char *row );
 	void GTKSysMsg( const int &code );
+	void GTKLoggedUser( const char *str );
 	void GTKSetGamename( const char *gameName, void *gameId );
 	void GTKSetPlayer1( const char *player );
 	void GTKSetPlayer2( const char *player );
 	void GTKSetButtonSitActive();
 	void GTKRemoveGameListItem( const char *str, void *byte );
+	void GTKSetElo( const double elo );
+	void GTKHideLogin();
 
 private:
 	Client client;
@@ -71,6 +77,9 @@ private:
 	GtkWidget *buttonGamename;
 	GtkWidget *buttonPlayer1;
 	GtkWidget *buttonPlayer2;
+	GtkWidget *loggedMsg;
+	GtkWidget *eloMsg;
+	GtkWidget *loginWindow;
 };
 
 #endif

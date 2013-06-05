@@ -71,7 +71,7 @@ void GFX::LoadImage( const char *filename )
         	}
 	}
 	
-	SDL_SetAlpha( optimizedImage, SDL_SRCALPHA, 150 );
+	//SDL_SetAlpha( optimizedImage, SDL_SRCALPHA, 150 );
 
 	PushImage( optimizedImage );
 }

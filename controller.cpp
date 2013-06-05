@@ -225,8 +225,11 @@ void Controller::GTKSysMsg( const int &code )
 		case CMD_GAME_BEGIN_PARAM_OK:
 			gtk_entry_set_text( (GtkEntry *)systemMsg, "Game has started, White player to move." );
 			break;
-		case CMD_GAME_PARAM_CHECKMATE:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate." );
+		case CMD_GAME_PARAM_CHECKMATE_W:
+			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate White." );
+			break;
+		case CMD_GAME_PARAM_CHECKMATE_B:
+			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate Black." );
 			break;
 		case CMD_GAME_PARAM_NEXTWHITE:
 			gtk_entry_set_text( (GtkEntry *)systemMsg, "White to move" );
@@ -236,4 +239,21 @@ void Controller::GTKSysMsg( const int &code )
 			break;
 
 	}
+}
+
+void Controller::GTKLoggedUser( const char *str )
+{
+	gtk_entry_set_text( (GtkEntry *)loggedMsg, str );
+}
+
+void Controller::GTKSetElo( const double elo )
+{
+	char buffer[ 0xff ];
+	sprintf( buffer, "%d", (int )elo );
+	gtk_entry_set_text( (GtkEntry *)eloMsg, buffer );
+}
+
+void Controller::GTKHideLogin()
+{
+	gtk_widget_hide( loginWindow );
 }
