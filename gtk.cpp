@@ -17,7 +17,7 @@
 GtkWidget *text_login, *text_pass;
 GtkWidget *listGames, *listSpectators;
 GtkTreeSelection *selection;
-GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg;
+GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;
 GtkWidget *buttonPlayer1, *buttonPlayer2;
 GtkWidget *gameWindow, *loginWindow;
 
@@ -108,11 +108,12 @@ void GTK::GameMenu()
 //  	GtkWidget *removeAll;
 
   	GtkWidget *vbox;
-  	GtkWidget *hbox, *hbox1;
+  	GtkWidget *hbox, *hbox1, *hboxp1, *hboxp2, *hboxGamename;
 	GtkWidget *vboxGames;
 
   	GtkWidget *separator;
   	GtkWidget *labelPlayer1, *labelPlayer2, *labelSpectators, *labelGamename;
+	GtkWidget *labelPlayer, *labelElo;
 
   	gameWindow = gtk_window_new( GTK_WINDOW_TOPLEVEL );
   	sw = gtk_scrolled_window_new( NULL, NULL );
@@ -136,12 +137,19 @@ void GTK::GameMenu()
 
   	hbox = gtk_hbox_new( TRUE, 5 );
   	hbox1 = gtk_hbox_new( TRUE, 5 );
+  	hboxp1 = gtk_hbox_new( TRUE, 5 );
+  	hboxp2 = gtk_hbox_new( TRUE, 5 );
 	vboxGames = gtk_vbox_new( TRUE, 5 );
+  	hboxGamename = gtk_hbox_new( TRUE, 5 );
 
 	loggedMsg = gtk_entry_new();
 	eloMsg = gtk_entry_new();
 
+	labelPlayer = gtk_label_new( "Player" );
+  	gtk_box_pack_start(GTK_BOX(hbox1), labelPlayer, FALSE, TRUE, 3);
 	gtk_box_pack_start(GTK_BOX(hbox1), loggedMsg, FALSE, TRUE, 3);
+	labelElo = gtk_label_new( "Elo" );
+  	gtk_box_pack_start(GTK_BOX(hbox1), labelElo, FALSE, TRUE, 3);
   	gtk_box_pack_start(GTK_BOX(hbox1), eloMsg, FALSE, TRUE, 3);
   	gtk_box_pack_start(GTK_BOX(vbox), hbox1, FALSE, TRUE, 3);
 
@@ -164,34 +172,41 @@ void GTK::GameMenu()
 
   	GameMenuList();
 	
-	//separator = gtk_hseparator_new();
-  	//gtk_box_pack_start(GTK_BOX(vboxGames), separator, FALSE, TRUE, 3);
+	separator = gtk_hseparator_new();
+  	gtk_box_pack_start(GTK_BOX(vboxGames), separator, FALSE, TRUE, 3);
 
 	gtk_entry_set_editable( (GtkEntry *)eloMsg, FALSE );
 	gtk_entry_set_editable( (GtkEntry *)loggedMsg, FALSE );
 
 	labelGamename = gtk_label_new( "Gamename:" );
-  	gtk_box_pack_start(GTK_BOX(vboxGames), labelGamename, FALSE, TRUE, 3);
-
+  	gtk_box_pack_start(GTK_BOX(hboxGamename), labelGamename, FALSE, TRUE, 3);
 //    	gtk_box_pack_start (GTK_BOX (label1), password, TRUE, TRUE, 0);
 //	gtk_widget_show( label2 );
-  	buttonGamename = gtk_button_new_with_label( "No Game" );
-  	gtk_box_pack_start(GTK_BOX(vboxGames), buttonGamename, FALSE, TRUE, 3);
-	gtk_widget_set_sensitive( buttonGamename, FALSE );
+  	buttonGamename = gtk_label_new( "No Game" );
+  	gtk_box_pack_start(GTK_BOX(hboxGamename), buttonGamename, FALSE, TRUE, 3);
+//	gtk_widget_set_sensitive( buttonGamename, FALSE );
+  	gtk_box_pack_start(GTK_BOX(vboxGames), hboxGamename, FALSE, TRUE, 3);
 
-	labelPlayer1 = gtk_label_new( "Player1:" );
+
+	labelPlayer1 = gtk_label_new( "White" );
   	gtk_box_pack_start(GTK_BOX(vboxGames), labelPlayer1, FALSE, TRUE, 3);
 
   	buttonPlayer1 = gtk_button_new_with_label( "Sit" );
-  	gtk_box_pack_start(GTK_BOX(vboxGames), buttonPlayer1, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(hboxp1), buttonPlayer1, FALSE, TRUE, 3);
 	gtk_widget_set_sensitive( buttonPlayer1, FALSE );
+ 	timerP1 = gtk_label_new("0");
+  	gtk_box_pack_start(GTK_BOX(hboxp1), timerP1, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(vboxGames), hboxp1, FALSE, TRUE, 3);
 
-	labelPlayer2 = gtk_label_new( "Player2:" );
+	labelPlayer2 = gtk_label_new( "Black" );
   	gtk_box_pack_start(GTK_BOX(vboxGames), labelPlayer2, FALSE, TRUE, 3);
 
   	buttonPlayer2 = gtk_button_new_with_label( "Sit" );
-  	gtk_box_pack_start(GTK_BOX(vboxGames), buttonPlayer2, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(hboxp2), buttonPlayer2, FALSE, TRUE, 3);
 	gtk_widget_set_sensitive( buttonPlayer2, FALSE );
+ 	timerP2 = gtk_label_new("0");
+  	gtk_box_pack_start(GTK_BOX(hboxp2), timerP2, FALSE, TRUE, 3);
+  	gtk_box_pack_start(GTK_BOX(vboxGames), hboxp2, FALSE, TRUE, 3);
 
 	//labelSpectators = gtk_label_new( "Spectators:" );
   	//gtk_box_pack_start( GTK_BOX(vboxGames), labelSpectators, FALSE, TRUE, 3 );
@@ -299,4 +314,5 @@ void GTK::Init( Controller *controller )
 	controller->SetLoggedMsg( loggedMsg );
 	controller->SetEloMsg( eloMsg );
 	controller->SetLoginWindow( loginWindow );
+	controller->SetTimers( timerP1, timerP2 );
 }

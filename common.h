@@ -19,31 +19,37 @@
 
 // as same as server ***
 enum {
-        CMD_LOGIN = 1,                  
-        CMD_GAME_CREATE,                
-        CMD_GAME_JOIN,                  
-	CMD_GAME_SIT,
-	CMD_GAME_MOVEPIECE,
-	CMD_GAME_INITIAL_PIECES,
-	CMD_GAME_STAND,
+        CMD_LOGIN = 1,
+        CMD_GAME_CREATE,
+        CMD_GAME_JOIN,
+        CMD_GAME_SIT,
+        CMD_GAME_MOVEPIECE,
+        CMD_GAME_INITIAL_PIECES,
+        CMD_GAME_STAND,
+        CMD_GAME_TIMER,
+	CMD_GAME_FINISHED,
+	CMD_GAME_ELO
 };
 
-enum {
+enum {                  
         CMD_LOGIN_PARAM_DETAILS_OK = 0,
         CMD_LOGIN_PARAM_DETAILS_ERR,
         CMD_GAME_CREATE_PARAM_OK,
         CMD_GAME_CREATE_PARAM_NOK,
         CMD_GAME_JOIN_PARAM_OK,
         CMD_GAME_JOIN_PARAM_NOK,
-	CMD_GAME_BEGIN_PARAM_OK,
-	CMD_GAME_PARAM_NEXTWHITE,
-	CMD_GAME_PARAM_NEXTBLACK,
-	CMD_GAME_CREATE_PARAM_DELETE,
-	CMD_GAME_STAND_PARAM_OK,
-	CMD_GAME_STAND_PARAM_NOK,
-	CMD_GAME_PARAM_CHECKMATE_W,
-	CMD_GAME_PARAM_CHECKMATE_B,
-};
+        CMD_GAME_BEGIN_PARAM_OK,
+        CMD_GAME_PARAM_NEXTWHITE,
+        CMD_GAME_PARAM_NEXTBLACK,
+        CMD_GAME_CREATE_PARAM_DELETE,
+        CMD_GAME_STAND_PARAM_OK,
+        CMD_GAME_STAND_PARAM_NOK,
+        CMD_GAME_PARAM_CHECKMATE_W, 
+        CMD_GAME_PARAM_CHECKMATE_B,
+        CMD_GAME_TIMER_PARAM_W, 
+        CMD_GAME_TIMER_PARAM_B,
+	CMD_GAME_FINISHED_DRAW
+}; 
 
 enum
 {
@@ -147,9 +153,22 @@ typedef struct ServerTwoBytes_s
         char byte1;
 } ServerTwoBytes_t;
 
+typedef struct GameTimerSrv_s
+{
+        char p1_min;
+        char p1_sec;
+        char p2_min;
+        char p2_sec;
+} GameTimerSrv_t;
+
 typedef struct GameLoginSrv_s
 {   
          char param;
          char username[ 32 ];
          double elorating;
 } GameLoginSrv_t;
+
+typedef struct EloSrv_s
+{
+        int elo_value;
+} EloSrv_t;

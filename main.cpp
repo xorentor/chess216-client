@@ -35,13 +35,13 @@ int frame = 0;
 int startTicks = 0;
 GTK gtk;
 
-void sock_init( int *sd )
+void sock_init( int *sd, const int port )
 {
 	int portno;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
 
-    	portno = 5777; 
+    	portno = port; 
     	*sd = socket(AF_INET, SOCK_STREAM, 0);
     	if( *sd < 0 ) 
         	printf("ERROR opening socket");
@@ -162,14 +162,14 @@ void *listener_thread( void *controller )
 
 					if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_CREATE_PARAM_OK ) {
 						char gamename[ 0x20 ];
-						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
+						sprintf( gamename, "Game %d", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
 						( (Controller *)controller )->GTKAppendGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
 						( (Controller *)controller )->GTKSysMsg( CMD_GAME_CREATE_PARAM_OK ); 
 					} 
 					else if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_CREATE_PARAM_DELETE ) {
 						printf("delete game %d\n", (int )((ServerTwoBytes_t *)pd.data )->byte1 );
 						char gamename[ 0x20 ];
-						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
+						sprintf( gamename, "Game %d", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
 						( (Controller *)controller )->GTKRemoveGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
 	
 }	
@@ -178,7 +178,7 @@ void *listener_thread( void *controller )
 					if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) {
 						char gamename[ 0x20 ];
 						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 );
-						( (Controller *)controller )->GTKSetGamename( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
+						( (Controller *)controller )->GTKSetGamename( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1, false );
 						( (Controller *)controller )->GTKSetButtonSitActive();
 					} else { printf("param: %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) ; } 
 					break;
@@ -223,6 +223,35 @@ void *listener_thread( void *controller )
 					}
 					}
 					break;
+				case CMD_GAME_TIMER:					
+					( (Controller *)controller )->GTKSetTimer( ( (GameTimerSrv_t *)pd.data )->p1_min, ( (GameTimerSrv_t *)pd.data )->p1_sec, ( (GameTimerSrv_t *)pd.data )->p2_min, ( (GameTimerSrv_t *)pd.data )->p2_sec );
+					break;
+				case CMD_GAME_FINISHED:
+					printf( "game finished" );
+					switch( (int )( (ServerTwoBytes_t *)pd.data )->byte0 ) {
+						case CMD_GAME_FINISHED_DRAW:
+
+							break;
+
+						case COLOR_WHITE:
+
+							break;
+
+						case COLOR_BLACK:
+
+							break;
+					}
+
+					( (Controller *)controller )->GTKSetPlayer1( "Sit" );
+					( (Controller *)controller )->GTKSetPlayer2( "Sit" );
+					( (Controller *)controller )->GTKSetButtonSitInActive();
+					( (Controller *)controller )->GTKSetTimer( 10, 0, 10, 0 );
+					( (Controller *)controller )->GTKSetGamename( "No Name", NULL, true );
+					break;
+				case CMD_GAME_ELO:
+			 		( (Controller *)controller )->GTKSetElo( ( ( EloSrv_t *)pd.data )->elo_value );
+
+					break;
 			}
 			printf("received %d\n", pd.command);
 	}
@@ -235,7 +264,7 @@ int main( int argc, char *argv[] ) {
 	pthread_mutex_t mutex;
 
         pthread_mutex_init( &mutex, NULL );
-	sock_init( &sd );
+	sock_init( &sd, atoi( argv[ 1 ] ) );
 	controller.SetDescriptor( &sd );
 	controller.SetMutex( &mutex );
 

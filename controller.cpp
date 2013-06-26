@@ -78,26 +78,30 @@ void Controller::GTKAppendGameListItem( const char *str, void *byte )
 
 void Controller::GTKRemoveGameListItem( const char *str, void *byte )
 {
-	printf( "remove game %s\n", str );
-	/*
+	GtkListStore *store;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
+	GValue value = {0,};
+	char *cptr;
 
-	RemoveGame( str, byte );
-
-	printf( "gamename: %s\n", str );
 	model = gtk_tree_view_get_model( (GtkTreeView *)list );
-        if( !gtk_tree_model_get_iter_from_string( model, &iter, str ) )
-                printf("no game iter\n");
-
-
-	/*	
-  	store = GTK_LIST_STORE( gtk_tree_view_get_model( GTK_TREE_VIEW( list ) ) );
-	if( !gtk_tree_model_get_iter_from_string( (GtkTreeModel *)store, &iter, str ) )
-		printf("no game iter\n");
-  	gtk_list_store_remove( store, &iter );
-	*/
-  	//gtk_list_store_set( store, &iter, *gamesListItem, str, -1 );
+	gtk_tree_model_get_iter_first( model, &iter );
+	for( ; ; ) {
+		gtk_tree_model_get_value( model, &iter, 0, &value );
+		cptr = (char *)g_value_get_string( &value );
+		
+		if( strcmp( str, cptr ) == 0 ) {
+	  		store = GTK_LIST_STORE( gtk_tree_view_get_model( GTK_TREE_VIEW( list ) ) );
+  			gtk_list_store_remove( store, &iter );
+			g_value_unset( &value );
+			cptr = NULL;
+			RemoveGame( str, byte );
+			break;
+		} 
+		
+		if( !gtk_tree_model_iter_next( model, &iter ) )
+			break;
+	}
 }
 
 void Controller::MovePiece( const int &xsrc, const int &ysrc, const int &xdest, const int &ydest )
@@ -186,10 +190,25 @@ void Controller::GTKJoinGame( const char *row )
 	}
 }
 
-void Controller::GTKSetGamename( const char *gameName, void *gameId )
+void Controller::GTKSetGamename( const char *gameName, void *gameId, bool finished )
 {
-	currentGameId = *(char *)gameId;		// copy this
-	gtk_button_set_label( (GtkButton *)buttonGamename, gameName );
+	if( finished )
+		currentGameId = 0;
+	else
+		currentGameId = *(char *)gameId;		// copy this
+	gtk_label_set_text( (GtkLabel *)buttonGamename, gameName );
+}
+
+void Controller::GTKSetTimer( const char p1min, const char p1sec, const char p2min, const char p2sec )
+{
+	char timer[ 16 ];
+	printf("%d %d %d %d\n", p1min, p1sec, p2min, p2sec );
+
+	sprintf( timer, "%d:%d", p1min, p1sec );
+	gtk_label_set_text( (GtkLabel *)timerP1, timer );
+
+	sprintf( timer, "%d:%d", p2min, p2sec );
+	gtk_label_set_text( (GtkLabel *)timerP2, timer );
 }
 
 void Controller::GTKSetPlayer1( const char *player )
@@ -208,6 +227,12 @@ void Controller::GTKSetButtonSitActive()
 {
 	gtk_widget_set_sensitive( buttonPlayer1, TRUE );
 	gtk_widget_set_sensitive( buttonPlayer2, TRUE );
+}
+
+void Controller::GTKSetButtonSitInActive()
+{
+	gtk_widget_set_sensitive( buttonPlayer1, FALSE );
+	gtk_widget_set_sensitive( buttonPlayer2, FALSE );
 }
 
 void Controller::GTKSysMsg( const int &code )

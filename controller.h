@@ -32,6 +32,7 @@ public:
 	void SetLoggedMsg( GtkWidget *loggedMsg ) { this->loggedMsg = loggedMsg; };
 	void SetEloMsg( GtkWidget *eloMsg ) { this->eloMsg = eloMsg; };
 	void SetLoginWindow( GtkWidget *loginWindow ) { this->loginWindow = loginWindow; };
+	void SetTimers( GtkWidget *timerP1, GtkWidget *timerP2 ) { this->timerP1 = timerP1; this->timerP2 = timerP2; };
 	void SetButtonSitActive();
 
 	// gtk
@@ -39,12 +40,14 @@ public:
 	void GTKJoinGame( const char *row );
 	void GTKSysMsg( const int &code );
 	void GTKLoggedUser( const char *str );
-	void GTKSetGamename( const char *gameName, void *gameId );
+	void GTKSetGamename( const char *gameName, void *gameId, bool finished );
 	void GTKSetPlayer1( const char *player );
 	void GTKSetPlayer2( const char *player );
 	void GTKSetButtonSitActive();
+	void GTKSetButtonSitInActive();
 	void GTKRemoveGameListItem( const char *str, void *byte );
 	void GTKSetElo( const double elo );
+	void GTKSetTimer( const char p1min, const char p1sec, const char p2min, const char p2sec );
 	void GTKHideLogin();
 
 private:
@@ -80,6 +83,8 @@ private:
 	GtkWidget *loggedMsg;
 	GtkWidget *eloMsg;
 	GtkWidget *loginWindow;
+	GtkWidget *timerP1;
+	GtkWidget *timerP2;
 };
 
 #endif
