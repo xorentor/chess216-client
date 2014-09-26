@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <malloc.h>
+#include <assert.h>
 
 #include "SDL/SDL.h"
 #include "SDL/SDL_syswm.h"

@@ -293,14 +293,9 @@ void GTK::LoginWindow()
 
 void GTK::Init( Controller *controller ) 
 {
-	int argc = 0;
-	char **argv;
-	argv[ 0 ] = "";
+	gtk_init( NULL, NULL );
 
 	this->controller = controller;
-
-	gtk_init( &argc, &argv );
-
 	GameMenu();
 	LoginWindow();
 

@@ -172,10 +172,11 @@ void Controller::ClientPlayerStand( const int &side )
 void Controller::GTKJoinGame( const char *row )
 {
 	for( int i = 0; i < MAX_GAMES; i++ ) {
-		if( games[ i ].id == 0 )
+		if( games[ i ].id == 0 ) {
 			continue;
+        }
 		if( strcmp( games[ i ].value, row ) == 0 ) {
-			printf("found game %d\n", games[ i ].id );	
+			LM_INFO("found game %d\n", games[ i ].id );	
 			memset( &pd, 0, sizeof( pd ) );
 			memset( &jd, 0, sizeof( jd ) );
 			pd.data = &jd;
@@ -202,7 +203,7 @@ void Controller::GTKSetGamename( const char *gameName, void *gameId, bool finish
 void Controller::GTKSetTimer( const char p1min, const char p1sec, const char p2min, const char p2sec )
 {
 	char timer[ 16 ];
-	printf("%d %d %d %d\n", p1min, p1sec, p2min, p2sec );
+	LM_INFO("Timer: %d %d %d %d\n", p1min, p1sec, p2min, p2sec );
 
 	sprintf( timer, "%d:%d", p1min, p1sec );
 	gtk_label_set_text( (GtkLabel *)timerP1, timer );
@@ -235,32 +236,34 @@ void Controller::GTKSetButtonSitInActive()
 	gtk_widget_set_sensitive( buttonPlayer2, FALSE );
 }
 
+#define SYS_TEXT(s)\
+    gtk_entry_set_text( (GtkEntry *)systemMsg, s );
 void Controller::GTKSysMsg( const int &code )
 {
 	switch( code ) {
 		case CMD_LOGIN_PARAM_DETAILS_OK:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Login successful." );
+			SYS_TEXT( "Login successful." );
 			break;	
 		case CMD_LOGIN_PARAM_DETAILS_ERR:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Login failed." );
+			SYS_TEXT( "Login failed." );
 			break;
 		case CMD_GAME_CREATE_PARAM_OK:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Game created successfully." );
+			SYS_TEXT( "Game created successfully." );
 			break;
 		case CMD_GAME_BEGIN_PARAM_OK:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Game has started, White player to move." );
+			SYS_TEXT( "Game has started, White player to move." );
 			break;
 		case CMD_GAME_PARAM_CHECKMATE_W:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate White." );
+			SYS_TEXT( "Check Mate White." );
 			break;
 		case CMD_GAME_PARAM_CHECKMATE_B:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Check Mate Black." );
+			SYS_TEXT( "Check Mate Black." );
 			break;
 		case CMD_GAME_PARAM_NEXTWHITE:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "White to move" );
+			SYS_TEXT( "White to move" );
 			break;
 		case CMD_GAME_PARAM_NEXTBLACK:
-			gtk_entry_set_text( (GtkEntry *)systemMsg, "Black to move" );
+			SYS_TEXT( "Black to move" );
 			break;
 
 	}

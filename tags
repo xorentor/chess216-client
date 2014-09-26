@@ -1,0 +1,361 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AddPiece	game.cpp	/^void Game::AddPiece( Piece_t **listPieces, const int &i, const int &x, const int &y, const int &skin, const int &color ) $/;"	f	class:Game
+ApplySurface	gfx.cpp	/^void GFX::ApplySurface( const int &x, const int &y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )$/;"	f	class:GFX
+BLACK_BISHOP	common.h	/^	BLACK_BISHOP,$/;"	e	enum:__anon3
+BLACK_KING	common.h	/^	BLACK_KING = 0,$/;"	e	enum:__anon3
+BLACK_KNIGHT	common.h	/^	BLACK_KNIGHT,$/;"	e	enum:__anon3
+BLACK_PAWN	common.h	/^	BLACK_PAWN,$/;"	e	enum:__anon3
+BLACK_QUEEN	common.h	/^	BLACK_QUEEN,$/;"	e	enum:__anon3
+BLACK_ROOK	common.h	/^	BLACK_ROOK,$/;"	e	enum:__anon3
+BOARD_SQUARE_WH	common.h	7;"	d
+BUFFER_LEN	common.h	17;"	d
+CH	sha256.h	13;"	d
+CMD_GAME_BEGIN_PARAM_OK	common.h	/^    CMD_GAME_BEGIN_PARAM_OK,$/;"	e	enum:__anon2
+CMD_GAME_CREATE	common.h	/^    CMD_GAME_CREATE,$/;"	e	enum:__anon1
+CMD_GAME_CREATE_PARAM_DELETE	common.h	/^    CMD_GAME_CREATE_PARAM_DELETE,$/;"	e	enum:__anon2
+CMD_GAME_CREATE_PARAM_NOK	common.h	/^    CMD_GAME_CREATE_PARAM_NOK,$/;"	e	enum:__anon2
+CMD_GAME_CREATE_PARAM_OK	common.h	/^    CMD_GAME_CREATE_PARAM_OK,$/;"	e	enum:__anon2
+CMD_GAME_ELO	common.h	/^	CMD_GAME_ELO$/;"	e	enum:__anon1
+CMD_GAME_FINISHED	common.h	/^	CMD_GAME_FINISHED,$/;"	e	enum:__anon1
+CMD_GAME_FINISHED_DRAW	common.h	/^	CMD_GAME_FINISHED_DRAW$/;"	e	enum:__anon2
+CMD_GAME_INITIAL_PIECES	common.h	/^    CMD_GAME_INITIAL_PIECES,$/;"	e	enum:__anon1
+CMD_GAME_JOIN	common.h	/^    CMD_GAME_JOIN,$/;"	e	enum:__anon1
+CMD_GAME_JOIN_PARAM_NOK	common.h	/^    CMD_GAME_JOIN_PARAM_NOK,$/;"	e	enum:__anon2
+CMD_GAME_JOIN_PARAM_OK	common.h	/^    CMD_GAME_JOIN_PARAM_OK,$/;"	e	enum:__anon2
+CMD_GAME_MOVEPIECE	common.h	/^    CMD_GAME_MOVEPIECE,$/;"	e	enum:__anon1
+CMD_GAME_PARAM_CHECKMATE_B	common.h	/^    CMD_GAME_PARAM_CHECKMATE_B,$/;"	e	enum:__anon2
+CMD_GAME_PARAM_CHECKMATE_W	common.h	/^    CMD_GAME_PARAM_CHECKMATE_W, $/;"	e	enum:__anon2
+CMD_GAME_PARAM_NEXTBLACK	common.h	/^    CMD_GAME_PARAM_NEXTBLACK,$/;"	e	enum:__anon2
+CMD_GAME_PARAM_NEXTWHITE	common.h	/^    CMD_GAME_PARAM_NEXTWHITE,$/;"	e	enum:__anon2
+CMD_GAME_SIT	common.h	/^    CMD_GAME_SIT,$/;"	e	enum:__anon1
+CMD_GAME_STAND	common.h	/^    CMD_GAME_STAND,$/;"	e	enum:__anon1
+CMD_GAME_STAND_PARAM_NOK	common.h	/^    CMD_GAME_STAND_PARAM_NOK,$/;"	e	enum:__anon2
+CMD_GAME_STAND_PARAM_OK	common.h	/^    CMD_GAME_STAND_PARAM_OK,$/;"	e	enum:__anon2
+CMD_GAME_TIMER	common.h	/^    CMD_GAME_TIMER,$/;"	e	enum:__anon1
+CMD_GAME_TIMER_PARAM_B	common.h	/^    CMD_GAME_TIMER_PARAM_B,$/;"	e	enum:__anon2
+CMD_GAME_TIMER_PARAM_W	common.h	/^    CMD_GAME_TIMER_PARAM_W, $/;"	e	enum:__anon2
+CMD_LOGIN	common.h	/^    CMD_LOGIN = 1,$/;"	e	enum:__anon1
+CMD_LOGIN_PARAM_DETAILS_ERR	common.h	/^    CMD_LOGIN_PARAM_DETAILS_ERR,$/;"	e	enum:__anon2
+CMD_LOGIN_PARAM_DETAILS_OK	common.h	/^    CMD_LOGIN_PARAM_DETAILS_OK = 0,$/;"	e	enum:__anon2
+COLOR_BLACK	common.h	15;"	d
+COLOR_WHITE	common.h	14;"	d
+CheckMove	game.cpp	/^bool Game::CheckMove( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+CleanImages	gfx.cpp	/^void GFX::CleanImages()$/;"	f	class:GFX
+ClearScreen	gfx.cpp	/^void GFX::ClearScreen()$/;"	f	class:GFX
+Client	client.cpp	/^Client::Client()$/;"	f	class:Client
+Client	client.h	/^class Client$/;"	c
+ClientGameCreate	controller.cpp	/^void Controller::ClientGameCreate()$/;"	f	class:Controller
+ClientLogin	controller.cpp	/^void Controller::ClientLogin( const char *user, const char *pass )$/;"	f	class:Controller
+ClientPlayerSit	controller.cpp	/^void Controller::ClientPlayerSit( const int &side )$/;"	f	class:Controller
+ClientPlayerStand	controller.cpp	/^void Controller::ClientPlayerStand( const int &side )$/;"	f	class:Controller
+Controller	controller.cpp	/^Controller::Controller()$/;"	f	class:Controller
+Controller	controller.h	/^class Controller $/;"	c
+CreateGame	gtk.cpp	/^void GTK::CreateGame( void *gtk )$/;"	f	class:GTK
+DARK_COLOR_B	common.h	10;"	d
+DARK_COLOR_G	common.h	9;"	d
+DARK_COLOR_R	common.h	8;"	d
+DBL_INT_ADD	sha256.h	9;"	d
+DP_ERROR_PREFIX	common.h	30;"	d
+DP_ERROR_TEXT	common.h	22;"	d
+DP_INFO_PREFIX	common.h	28;"	d
+DP_INFO_TEXT	common.h	21;"	d
+DP_PREFIX	common.h	20;"	d
+DP_WARNING_PREFIX	common.h	29;"	d
+DP_WARNING_TEXT	common.h	23;"	d
+Destroy	gtk.cpp	/^void GTK::Destroy( void *gtk ) $/;"	f	class:GTK
+DrawPieces	gfx.cpp	/^void GFX::DrawPieces()$/;"	f	class:GFX
+EP0	sha256.h	15;"	d
+EP1	sha256.h	16;"	d
+EloSrv_s	common.h	/^typedef struct EloSrv_s$/;"	s
+EloSrv_t	common.h	/^} EloSrv_t;$/;"	t	typeref:struct:EloSrv_s
+EnPassant	game.cpp	/^bool Game::EnPassant( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+FinalMovePiece	game.cpp	/^void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )$/;"	f	class:Game
+Flip	gfx.cpp	/^bool GFX::Flip()$/;"	f	class:GFX
+GENBOARDR_F	common.h	12;"	d
+GENBOARD_F	common.h	11;"	d
+GFX	gfx.cpp	/^GFX::GFX()$/;"	f	class:GFX
+GFX	gfx.h	/^class GFX$/;"	c
+GTK	gtk.cpp	/^GTK::GTK()$/;"	f	class:GTK
+GTK	gtk.h	/^class GTK$/;"	c
+GTKAppendGameListItem	controller.cpp	/^void Controller::GTKAppendGameListItem( const char *str, void *byte )$/;"	f	class:Controller
+GTKHideLogin	controller.cpp	/^void Controller::GTKHideLogin()$/;"	f	class:Controller
+GTKJoinGame	controller.cpp	/^void Controller::GTKJoinGame( const char *row )$/;"	f	class:Controller
+GTKLoggedUser	controller.cpp	/^void Controller::GTKLoggedUser( const char *str )$/;"	f	class:Controller
+GTKRemoveGameListItem	controller.cpp	/^void Controller::GTKRemoveGameListItem( const char *str, void *byte )$/;"	f	class:Controller
+GTKSetButtonSitActive	controller.cpp	/^void Controller::GTKSetButtonSitActive()$/;"	f	class:Controller
+GTKSetButtonSitInActive	controller.cpp	/^void Controller::GTKSetButtonSitInActive()$/;"	f	class:Controller
+GTKSetElo	controller.cpp	/^void Controller::GTKSetElo( const double elo )$/;"	f	class:Controller
+GTKSetGamename	controller.cpp	/^void Controller::GTKSetGamename( const char *gameName, void *gameId, bool finished )$/;"	f	class:Controller
+GTKSetPlayer1	controller.cpp	/^void Controller::GTKSetPlayer1( const char *player )$/;"	f	class:Controller
+GTKSetPlayer2	controller.cpp	/^void Controller::GTKSetPlayer2( const char *player )$/;"	f	class:Controller
+GTKSetTimer	controller.cpp	/^void Controller::GTKSetTimer( const char p1min, const char p1sec, const char p2min, const char p2sec )$/;"	f	class:Controller
+GTKSysMsg	controller.cpp	/^void Controller::GTKSysMsg( const int &code )$/;"	f	class:Controller
+Game	game.cpp	/^Game::Game() $/;"	f	class:Game
+Game	game.h	/^class Game$/;"	c
+GameLoginSrv_s	common.h	/^typedef struct GameLoginSrv_s$/;"	s
+GameLoginSrv_t	common.h	/^} GameLoginSrv_t;$/;"	t	typeref:struct:GameLoginSrv_s
+GameMenu	gtk.cpp	/^void GTK::GameMenu()$/;"	f	class:GTK
+GameMenuList	gtk.cpp	/^void GTK::GameMenuList()$/;"	f	class:GTK
+GamePieceMoveSrv_s	common.h	/^typedef struct GamePieceMoveSrv_s$/;"	s
+GamePieceMoveSrv_t	common.h	/^} GamePieceMoveSrv_t;$/;"	t	typeref:struct:GamePieceMoveSrv_s
+GameSitData_s	common.h	/^typedef struct GameSitData_s$/;"	s
+GameSitData_t	common.h	/^} GameSitData_t;$/;"	t	typeref:struct:GameSitData_s
+GameSitServerData_s	common.h	/^typedef struct GameSitServerData_s$/;"	s
+GameSitServerData_t	common.h	/^} GameSitServerData_t;$/;"	t	typeref:struct:GameSitServerData_s
+GameStandData_s	common.h	/^typedef struct GameStandData_s$/;"	s
+GameStandData_t	common.h	/^} GameStandData_t;$/;"	t	typeref:struct:GameStandData_s
+GameStandServerData_s	common.h	/^typedef struct GameStandServerData_s$/;"	s
+GameStandServerData_t	common.h	/^} GameStandServerData_t;$/;"	t	typeref:struct:GameStandServerData_s
+GameTimerSrv_s	common.h	/^typedef struct GameTimerSrv_s$/;"	s
+GameTimerSrv_t	common.h	/^} GameTimerSrv_t;$/;"	t	typeref:struct:GameTimerSrv_s
+Game_s	common.h	/^typedef struct Game_s$/;"	s
+Game_t	common.h	/^} Game_t;$/;"	t	typeref:struct:Game_s
+GenerateBoard	gfx.cpp	/^bool GFX::GenerateBoard( const bool reverse )$/;"	f	class:GFX
+GetDescriptor	controller.h	/^	const int *GetDescriptor() { return socketDesc; }$/;"	f	class:Controller
+GetImages	gfx.h	/^	std::vector<Image_t *> *GetImages() { return &images; }$/;"	f	class:GFX
+GetPieces	game.h	/^	Piece_t **GetPieces() { return listPieces; };$/;"	f	class:Game
+GetPieces	gfx.h	/^	SDL_Rect **GetPieces() { return mappedPieces; };$/;"	f	class:GFX
+GetScreen	gfx.h	/^	SDL_Surface *GetScreen() { return screen; }$/;"	f	class:GFX
+ID	game.h	/^	int ID;$/;"	m	class:Piece_t
+Image_t	gfx.h	/^	Image_t() {};$/;"	f	class:Image_t
+Image_t	gfx.h	/^class Image_t$/;"	c
+Init	game.cpp	/^const bool Game::Init(  SDL_Rect **skins, Controller *controller ) $/;"	f	class:Game
+Init	gfx.cpp	/^bool GFX::Init()$/;"	f	class:GFX
+Init	gtk.cpp	/^void GTK::Init( Controller *controller ) $/;"	f	class:GTK
+JoinData_s	common.h	/^typedef struct JoinData_s$/;"	s
+JoinData_t	common.h	/^} JoinData_t;$/;"	t	typeref:struct:JoinData_s
+JoinGame	gtk.cpp	/^void GTK::JoinGame( void *gtk )$/;"	f	class:GTK
+KingCheck	game.cpp	/^bool Game::KingCheck( const int &color )$/;"	f	class:Game
+KingCheckMate	game.cpp	/^bool Game::KingCheckMate( const int &color )$/;"	f	class:Game
+KingCheckSimulate	game.cpp	/^bool Game::KingCheckSimulate( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+LM_ERR	common.h	35;"	d
+LM_INFO	common.h	32;"	d
+LM_WARN	common.h	38;"	d
+LoadImage	gfx.cpp	/^void GFX::LoadImage( const char *filename )$/;"	f	class:GFX
+Login	gtk.cpp	/^void GTK::Login( void *gtk ) {$/;"	f	class:GTK
+LoginData_s	common.h	/^typedef struct LoginData_s$/;"	s
+LoginData_t	common.h	/^} LoginData_t;$/;"	t	typeref:struct:LoginData_s
+LoginWindow	gtk.cpp	/^void GTK::LoginWindow()$/;"	f	class:GTK
+MAJ	sha256.h	14;"	d
+MAX_GAMES	common.h	18;"	d
+MY_DPRINT	common.h	25;"	d
+MapPieces	gfx.cpp	/^void GFX::MapPieces()$/;"	f	class:GFX
+MouseInput	game.cpp	/^void Game::MouseInput( const int &xm, const int &ym )$/;"	f	class:Game
+MouseInput	gfx.cpp	/^void GFX::MouseInput( const int &xm, const int &ym )$/;"	f	class:GFX
+MoveBishop	game.cpp	/^bool Game::MoveBishop( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MoveKing	game.cpp	/^bool Game::MoveKing( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MoveKnight	game.cpp	/^bool Game::MoveKnight( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MovePawn	game.cpp	/^bool Game::MovePawn( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MovePiece	controller.cpp	/^void Controller::MovePiece( const int &xsrc, const int &ysrc, const int &xdest, const int &ydest )$/;"	f	class:Controller
+MovePiece	game.cpp	/^bool Game::MovePiece( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MovePieceData_s	common.h	/^typedef struct MovePieceData_s$/;"	s
+MovePieceData_t	common.h	/^} MovePieceData_t;$/;"	t	typeref:struct:MovePieceData_s
+MovePieceIter	game.cpp	/^int Game::MovePieceIter( const int &j, const int &k, const int &xdest, const int &ydest, Piece_t *piece )$/;"	f	class:Game
+MoveQueen	game.cpp	/^bool Game::MoveQueen( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+MoveRook	game.cpp	/^bool Game::MoveRook( Piece_t *piece, const int &xdest, const int &ydest )$/;"	f	class:Game
+Move_s	game.h	/^typedef struct Move_s$/;"	s
+Move_t	game.h	/^} Move_t;$/;"	t	typeref:struct:Move_s
+PacketData_s	common.h	/^typedef struct PacketData_s$/;"	s
+PacketData_t	common.h	/^} PacketData_t;$/;"	t	typeref:struct:PacketData_s
+PieceDimension	gfx.cpp	/^void GFX::PieceDimension( const int &x, const int &y, const int &w, const int &h, SDL_Rect **pieces, const int &piece )$/;"	f	class:GFX
+Piece_t	game.h	/^class Piece_t$/;"	c
+Player1Sit	gtk.cpp	/^void GTK::Player1Sit( void *gtk )$/;"	f	class:GTK
+Player2Sit	gtk.cpp	/^void GTK::Player2Sit( void *gtk )$/;"	f	class:GTK
+PushImage	gfx.cpp	/^void GFX::PushImage( SDL_Surface *image )$/;"	f	class:GFX
+ROTLEFT	sha256.h	10;"	d
+ROTRIGHT	sha256.h	11;"	d
+Receive	client.cpp	/^int Client::Receive()$/;"	f	class:Client
+RemoveGame	controller.cpp	/^void Controller::RemoveGame( const char *str, void *byte )$/;"	f	class:Controller
+Run	gfx.cpp	/^void GFX::Run( Piece_t **pieces )$/;"	f	class:GFX
+SCREEN_BPP	common.h	6;"	d
+SCREEN_HEIGHT	common.h	5;"	d
+SCREEN_WIDTH	common.h	4;"	d
+SDL_MoveXY	gfx.cpp	/^void GFX::SDL_MoveXY( SDL_Surface *srf, int top, int left )$/;"	f	class:GFX
+SHA256_CTX	sha256.h	/^} SHA256_CTX;$/;"	t	typeref:struct:__anon4
+SIG0	sha256.h	17;"	d
+SIG1	sha256.h	18;"	d
+SYS_TEXT	controller.cpp	239;"	d	file:
+Send	client.cpp	/^int Client::Send( const int *sd, PacketData_t *pd )$/;"	f	class:Client
+ServerByte_s	common.h	/^typedef struct ServerByte_s$/;"	s
+ServerByte_t	common.h	/^} ServerByte_t;$/;"	t	typeref:struct:ServerByte_s
+ServerTwoBytes_s	common.h	/^typedef struct ServerTwoBytes_s$/;"	s
+ServerTwoBytes_t	common.h	/^} ServerTwoBytes_t;$/;"	t	typeref:struct:ServerTwoBytes_s
+SetDescriptor	controller.h	/^	void SetDescriptor( const int *sd ) { this->socketDesc = sd; }$/;"	f	class:Controller
+SetEloMsg	controller.h	/^	void SetEloMsg( GtkWidget *eloMsg ) { this->eloMsg = eloMsg; };$/;"	f	class:Controller
+SetGameCountColumns	controller.h	/^	void SetGameCountColumns( int *gamesCountColumns ) { this->gamesCountColumns = gamesCountColumns; }$/;"	f	class:Controller
+SetGameList	controller.h	/^	void SetGameList( GtkWidget *list ) { this->list = list; }$/;"	f	class:Controller
+SetGameListItem	controller.h	/^	void SetGameListItem( int *gamesListItem ) { this->gamesListItem = gamesListItem; }$/;"	f	class:Controller
+SetGameName	controller.h	/^	void SetGameName( GtkWidget *gameName ) { this->buttonGamename = gameName; };$/;"	f	class:Controller
+SetLoggedMsg	controller.h	/^	void SetLoggedMsg( GtkWidget *loggedMsg ) { this->loggedMsg = loggedMsg; };$/;"	f	class:Controller
+SetLoginWindow	controller.h	/^	void SetLoginWindow( GtkWidget *loginWindow ) { this->loginWindow = loginWindow; };$/;"	f	class:Controller
+SetMutex	controller.h	/^	void SetMutex( pthread_mutex_t *mt ) { this->mutex = mt; }$/;"	f	class:Controller
+SetPlayer1	controller.h	/^	void SetPlayer1( GtkWidget *player ) { this->buttonPlayer1 = player; };$/;"	f	class:Controller
+SetPlayer2	controller.h	/^	void SetPlayer2( GtkWidget *player ) { this->buttonPlayer2 = player; };$/;"	f	class:Controller
+SetStop	controller.h	/^	void SetStop() { quit = 1; }$/;"	f	class:Controller
+SetSysMsg	controller.h	/^	void SetSysMsg( GtkWidget *systemMsg ) { this->systemMsg = systemMsg; }$/;"	f	class:Controller
+SetTimers	controller.h	/^	void SetTimers( GtkWidget *timerP1, GtkWidget *timerP2 ) { this->timerP1 = timerP1; this->timerP2 = timerP2; };$/;"	f	class:Controller
+SquareChecked	game.cpp	/^bool Game::SquareChecked( const int &x, const int &y, const int &color )$/;"	f	class:Game
+SquareFree	game.cpp	/^bool Game::SquareFree( const int &x, const int &y )$/;"	f	class:Game
+SrvInitPieces	game.cpp	/^void Game::SrvInitPieces( char *data )$/;"	f	class:Game
+Stop	controller.h	/^	int Stop() { return quit; }$/;"	f	class:Controller
+StoreGame	controller.cpp	/^void Controller::StoreGame( const char *str, void *byte )$/;"	f	class:Controller
+SwapBoard	gfx.cpp	/^bool GFX::SwapBoard( void )$/;"	f	class:GFX
+Update	gfx.cpp	/^void GFX::Update( Piece_t **pieces )$/;"	f	class:GFX
+WHITE_BISHOP	common.h	/^	WHITE_BISHOP,$/;"	e	enum:__anon3
+WHITE_KING	common.h	/^	WHITE_KING,$/;"	e	enum:__anon3
+WHITE_KNIGHT	common.h	/^	WHITE_KNIGHT,$/;"	e	enum:__anon3
+WHITE_PAWN	common.h	/^	WHITE_PAWN$/;"	e	enum:__anon3
+WHITE_QUEEN	common.h	/^	WHITE_QUEEN,	$/;"	e	enum:__anon3
+WHITE_ROOK	common.h	/^	WHITE_ROOK,$/;"	e	enum:__anon3
+__CLIENT_H_	client.h	2;"	d
+__CONTROLLER_H_	controller.h	2;"	d
+__GAME_H_	game.h	2;"	d
+__GFX_H_	gfx.h	2;"	d
+__GTK_H_	gtk.h	2;"	d
+__SHA256_H_	sha256.h	2;"	d
+bitlen	sha256.h	/^   uint bitlen[2];$/;"	m	struct:__anon4
+buttonGamename	controller.h	/^	GtkWidget *buttonGamename;$/;"	m	class:Controller
+buttonGamename	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+buttonPlayer1	controller.h	/^	GtkWidget *buttonPlayer1;$/;"	m	class:Controller
+buttonPlayer1	gtk.cpp	/^GtkWidget *buttonPlayer1, *buttonPlayer2;$/;"	v
+buttonPlayer2	controller.h	/^	GtkWidget *buttonPlayer2;$/;"	m	class:Controller
+buttonPlayer2	gtk.cpp	/^GtkWidget *buttonPlayer1, *buttonPlayer2;$/;"	v
+byte	common.h	/^	char byte;$/;"	m	struct:ServerByte_s
+byte0	common.h	/^        char byte0;$/;"	m	struct:ServerTwoBytes_s
+byte1	common.h	/^        char byte1;$/;"	m	struct:ServerTwoBytes_s
+checkMate	common.h	/^	char checkMate;$/;"	m	struct:GamePieceMoveSrv_s
+client	controller.h	/^	Client client;$/;"	m	class:Controller
+color	game.h	/^	int color;$/;"	m	class:Piece_t
+command	common.h	/^        char command;$/;"	m	struct:PacketData_s
+controller	game.h	/^	Controller *controller;	$/;"	m	class:Game
+controller	gtk.h	/^	Controller *controller;$/;"	m	class:GTK
+createGamePtr	gtk.h	/^	void (GTK::*createGamePtr)( void* );$/;"	m	class:GTK
+currentGameId	controller.h	/^	char currentGameId;$/;"	m	class:Controller
+data	common.h	/^        void *data;$/;"	m	struct:PacketData_s
+data	sha256.h	/^   uchar data[64];$/;"	m	struct:__anon4
+datalen	sha256.h	/^   uint datalen;$/;"	m	struct:__anon4
+dbg	game.cpp	/^void Game::dbg( const char *s )$/;"	f	class:Game
+destPtr	gtk.h	/^	void (GTK::*destPtr)( void* );$/;"	m	class:GTK
+destX	game.h	/^	char destX;$/;"	m	struct:Move_s
+destY	game.h	/^	char destY;$/;"	m	struct:Move_s
+dprint	main.cpp	/^void dprint( const char * format, ...) {$/;"	f
+eloMsg	controller.h	/^	GtkWidget *eloMsg;$/;"	m	class:Controller
+eloMsg	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+elo_value	common.h	/^        int elo_value;$/;"	m	struct:EloSrv_s
+elorating	common.h	/^         double elorating;$/;"	m	struct:GameLoginSrv_s
+fieldSelected	gfx.h	/^	bool fieldSelected;$/;"	m	class:GFX
+frame	main.cpp	/^static int frame = 0;$/;"	v	file:
+game	main.cpp	/^static Game game;$/;"	v	file:
+gameBegin	common.h	/^	char gameBegin;$/;"	m	struct:GameSitServerData_s
+gameId	common.h	/^	char gameId;$/;"	m	struct:GameSitData_s
+gameId	common.h	/^	char gameId;$/;"	m	struct:JoinData_s
+gameId	common.h	/^        char gameId;$/;"	m	struct:GameStandData_s
+gameWindow	gtk.cpp	/^GtkWidget *gameWindow, *loginWindow;$/;"	v
+game_thread	main.cpp	/^static void *game_thread( void *controller ) {$/;"	f	file:
+games	controller.h	/^	Game_t games[ MAX_GAMES ];$/;"	m	class:Controller
+gamesCountColumns	controller.h	/^	int *gamesCountColumns;$/;"	m	class:Controller
+gamesCountColumns	gtk.cpp	/^int gamesCountColumns;$/;"	v
+gamesListItem	controller.h	/^	int *gamesListItem;$/;"	m	class:Controller
+gamesListItem	gtk.cpp	/^int gamesListItem;$/;"	v
+generateReversed	gfx.h	/^	bool generateReversed;$/;"	m	class:GFX
+generatedBoard	gfx.h	/^	int generatedBoard;$/;"	m	class:GFX
+gtk	main.cpp	/^static GTK gtk;$/;"	v	file:
+id	common.h	/^	int id;$/;"	m	struct:Game_s
+images	gfx.h	/^	std::vector<Image_t *> images;$/;"	m	class:GFX
+inPlay	game.h	/^	bool inPlay;$/;"	m	class:Piece_t
+inuse	gfx.h	/^	bool inuse;	$/;"	m	class:Image_t
+isInitialState	game.h	/^	bool isInitialState;$/;"	m	class:Piece_t
+isSelected	game.h	/^	bool isSelected;$/;"	m	class:Piece_t
+jd	controller.h	/^	JoinData_t jd;$/;"	m	class:Controller
+joinGamePtr	gtk.h	/^	void (GTK::*joinGamePtr)( void* );$/;"	m	class:GTK
+k	sha256.cpp	/^uint k[64] = {$/;"	v
+lastMove	game.h	/^	Move_t lastMove;$/;"	m	class:Game
+ld	controller.h	/^	LoginData_t ld;$/;"	m	class:Controller
+length	common.h	/^	char length;$/;"	m	struct:PacketData_s
+list	controller.h	/^	GtkWidget *list;$/;"	m	class:Controller
+listGames	gtk.cpp	/^GtkWidget *listGames, *listSpectators;$/;"	v
+listPieces	game.h	/^	Piece_t **listPieces;$/;"	m	class:Game
+listSpectators	gtk.cpp	/^GtkWidget *listGames, *listSpectators;$/;"	v
+listener_thread	main.cpp	/^static void *listener_thread( void *controller ) {$/;"	f	file:
+loggedMsg	controller.h	/^	GtkWidget *loggedMsg;$/;"	m	class:Controller
+loggedMsg	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+loginPtr	gtk.h	/^	void (GTK::*loginPtr)( void* );$/;"	m	class:GTK
+loginWindow	controller.h	/^	GtkWidget *loginWindow;$/;"	m	class:Controller
+loginWindow	gtk.cpp	/^GtkWidget *gameWindow, *loginWindow;$/;"	v
+main	main.cpp	/^int main( int argc, char *argv[] ) {$/;"	f
+mappedPieces	gfx.h	/^	SDL_Rect **mappedPieces;$/;"	m	class:GFX
+md	controller.h	/^	MovePieceData_t md;$/;"	m	class:Controller
+mutex	controller.h	/^	pthread_mutex_t *mutex;$/;"	m	class:Controller
+next	common.h	/^	char next;$/;"	m	struct:GamePieceMoveSrv_s
+output	controller.h	/^	char output[ BUFFER_LEN ];$/;"	m	class:Controller
+p1_min	common.h	/^        char p1_min;$/;"	m	struct:GameTimerSrv_s
+p1_sec	common.h	/^        char p1_sec;$/;"	m	struct:GameTimerSrv_s
+p2_min	common.h	/^        char p2_min;$/;"	m	struct:GameTimerSrv_s
+p2_sec	common.h	/^        char p2_sec;$/;"	m	struct:GameTimerSrv_s
+param	common.h	/^         char param;$/;"	m	struct:GameLoginSrv_s
+param	common.h	/^        char param;$/;"	m	struct:GameStandServerData_s
+password	common.h	/^        char password[ 32 ];$/;"	m	struct:LoginData_s
+pd	controller.h	/^	PacketData_t pd;$/;"	m	class:Controller
+pieceId	common.h	/^        char pieceId;$/;"	m	struct:GamePieceMoveSrv_s
+quit	main.cpp	/^int quit = 0;$/;"	v
+screen	gfx.h	/^	SDL_Surface *screen;$/;"	m	class:GFX
+sd	controller.h	/^	GameSitData_t sd;$/;"	m	class:Controller
+sd	game.h	/^	int *sd;$/;"	m	class:Game
+sdl_init	main.cpp	/^static int sdl_init( Controller *controller, GFX *gfx ) {$/;"	f	file:
+sdl_loop	main.cpp	/^static int sdl_loop( void *g ) {	$/;"	f	file:
+selection	gtk.cpp	/^GtkTreeSelection *selection;$/;"	v
+sha256_final	sha256.cpp	/^void sha256_final(SHA256_CTX *ctx, uchar hash[])$/;"	f
+sha256_init	sha256.cpp	/^void sha256_init(SHA256_CTX *ctx)$/;"	f
+sha256_transform	sha256.cpp	/^void sha256_transform(SHA256_CTX *ctx, uchar data[])$/;"	f
+sha256_update	sha256.cpp	/^void sha256_update(SHA256_CTX *ctx, uchar data[], uint len)$/;"	f
+simulatePiece	game.h	/^	Piece_t *simulatePiece;$/;"	m	class:Game
+skin	game.h	/^	SDL_Rect *skin;$/;"	m	class:Piece_t
+skinID	game.h	/^	char skinID;$/;"	m	struct:Move_s
+skinID	game.h	/^	int skinID;$/;"	m	class:Piece_t
+skins	game.h	/^	SDL_Rect **skins;$/;"	m	class:Game
+slot	common.h	/^	char slot;$/;"	m	struct:GameSitData_s
+slot	common.h	/^	char slot;$/;"	m	struct:GameSitServerData_s
+slot	common.h	/^        char slot;$/;"	m	struct:GameStandData_s
+slot	common.h	/^        char slot;$/;"	m	struct:GameStandServerData_s
+sock_init	main.cpp	/^static void sock_init( int *sd ) {$/;"	f	file:
+socketDesc	controller.h	/^	const int *socketDesc;$/;"	m	class:Controller
+srcX	game.h	/^	char srcX;$/;"	m	struct:Move_s
+srcY	game.h	/^	char srcY;$/;"	m	struct:Move_s
+startTicks	main.cpp	/^static int startTicks = 0;$/;"	v	file:
+state	sha256.h	/^   uint state[8];$/;"	m	struct:__anon4
+surface	gfx.h	/^	SDL_Surface *surface;$/;"	m	class:Image_t
+systemMsg	controller.h	/^	GtkWidget *systemMsg;$/;"	m	class:Controller
+systemMsg	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+text_login	gtk.cpp	/^GtkWidget *text_login, *text_pass;$/;"	v
+text_pass	gtk.cpp	/^GtkWidget *text_login, *text_pass;$/;"	v
+timerP1	controller.h	/^	GtkWidget *timerP1;$/;"	m	class:Controller
+timerP1	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+timerP2	controller.h	/^	GtkWidget *timerP2;$/;"	m	class:Controller
+timerP2	gtk.cpp	/^GtkWidget *systemMsg, *buttonGamename, *loggedMsg, *eloMsg, *timerP1, *timerP2;$/;"	v
+uchar	sha256.h	5;"	d
+uint	sha256.h	6;"	d
+username	common.h	/^	char username[ 32 ];$/;"	m	struct:GameSitServerData_s
+username	common.h	/^         char username[ 32 ];$/;"	m	struct:GameLoginSrv_s
+username	common.h	/^        char username[ 32 ];$/;"	m	struct:LoginData_s
+value	common.h	/^	char value[ 32 ];$/;"	m	struct:Game_s
+x	game.h	/^	int x;$/;"	m	class:Piece_t
+xdest	common.h	/^	char xdest;$/;"	m	struct:MovePieceData_s
+xdest	common.h	/^        char xdest;$/;"	m	struct:GamePieceMoveSrv_s
+xpos	game.h	/^	int xpos;$/;"	m	class:Piece_t
+xsrc	common.h	/^	char xsrc;$/;"	m	struct:MovePieceData_s
+y	game.h	/^	int y;$/;"	m	class:Piece_t
+ydest	common.h	/^	char ydest;$/;"	m	struct:MovePieceData_s
+ydest	common.h	/^        char ydest;$/;"	m	struct:GamePieceMoveSrv_s
+ypos	game.h	/^	int ypos;$/;"	m	class:Piece_t
+ysrc	common.h	/^	char ysrc;$/;"	m	struct:MovePieceData_s
+~Client	client.cpp	/^Client::~Client()$/;"	f	class:Client
+~Controller	controller.cpp	/^Controller::~Controller()$/;"	f	class:Controller
+~GFX	gfx.cpp	/^GFX::~GFX()$/;"	f	class:GFX
+~GTK	gtk.cpp	/^GTK::~GTK()$/;"	f	class:GTK
+~Game	game.cpp	/^Game::~Game()$/;"	f	class:Game
+~Image_t	gfx.h	/^	virtual ~Image_t() {};$/;"	f	class:Image_t

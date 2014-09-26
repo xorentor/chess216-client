@@ -19,13 +19,12 @@ Game::~Game()
 
 const bool Game::Init(  SDL_Rect **skins, Controller *controller ) 
 {
-	this->controller = controller;
+    this->controller = controller;
 	this->skins = skins;
 
 	// 32 pointers to pieces
 	listPieces = (Piece_t **) malloc( sizeof(int) * 32 );
 	int i = 0;
-
 	// white Pawns
 	for( ; i < 8; i++ )
 	{
@@ -178,11 +177,11 @@ bool Game::MoveKing( Piece_t *piece, const int &xdest, const int &ydest )
 
 		for( int i = 1; i <= 2; i++ ) {
 			if( !SquareFree( *x + i, *y ) || SquareChecked( *x + i, *y, piece->color ) ) {
-				printf( "position checked x %d y %d \n", *x + i, *y  );
+				LM_INFO( "position checked x %d y %d \n", *x + i, *y  );
 				return false;
 			}
 		}
-		printf( "castle king's side\n" );
+		LM_INFO( "castle king's side\n" );
 		return true;
 	}
 
@@ -193,12 +192,12 @@ bool Game::MoveKing( Piece_t *piece, const int &xdest, const int &ydest )
 
 		for( int i = 1; i <= 3; i++ ) {
 			if( !SquareFree( *x - i, *y ) || SquareChecked( *x - i, *y, piece->color ) ) {
-				printf( "position checked x %d y %d \n", *x - i, *y  );
+				LM_INFO( "position checked x %d y %d \n", *x - i, *y  );
 				return false;
 			}
 		}
 
-		printf( "castle queen's side\n" );
+		LM_INFO( "castle queen's side\n" );
 		return true;
 	}
 
