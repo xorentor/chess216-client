@@ -1,8 +1,3 @@
-#include <iostream>
-
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-
 #include "common.h"
 #include "client.h"
 #include "controller.h"
@@ -19,14 +14,15 @@ Game::~Game()
 
 const bool Game::Init(  SDL_Rect **skins, Controller *controller ) 
 {
+	int i;
+
     this->controller = controller;
 	this->skins = skins;
 
 	// 32 pointers to pieces
-	listPieces = (Piece_t **) malloc( sizeof(int) * 32 );
-	int i = 0;
+	listPieces = (Piece_t **) malloc( sizeof(void*) * 32 );
 	// white Pawns
-	for( ; i < 8; i++ )
+	for( i = 0; i < 8; i++ )
 	{
 		AddPiece( listPieces, i, i, 6, WHITE_PAWN, COLOR_WHITE );
 	}
@@ -170,7 +166,7 @@ void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )
 
 	// turn pawn into queen
 	if( ( piece->skinID == BLACK_PAWN && piece->ypos == 6 && ydest == 7 ) || ( piece->skinID == WHITE_PAWN  && piece->ypos == 1 && ydest == 0 ) ) {
-		printf("turn pawn\n");
+		LM_INFO("turn pawn into queen\n");
 		if( piece->skinID == WHITE_PAWN ) {
 			piece->skinID = WHITE_QUEEN;
 			piece->skin = skins[ WHITE_QUEEN ];
@@ -185,8 +181,7 @@ void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )
 			continue;
 
 		if( listPieces[ i ]->xpos == xdest && listPieces[ i ]->ypos == ydest && listPieces[ i ]->color != piece->color ) {
-			
-			printf( "capture state piece: %d \n", listPieces[ i ]->ID );	
+			LM_INFO( "capture state piece: %d \n", listPieces[ i ]->ID );	
 			listPieces[ i ]->inPlay = false;
 			piece->xpos = xdest;
 			piece->ypos = ydest;
@@ -199,7 +194,7 @@ void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )
 		}
 	}	
 
-	printf( "empty square\n" );
+	LM_INFO( "empty square\n" );
 	piece->xpos = xdest;
 	piece->ypos = ydest;
 	piece->x = BOARD_SQUARE_WH * xdest;
@@ -214,39 +209,15 @@ void Game::MouseInput( const int &xm, const int &ym )
 	x = (int)(xm / BOARD_SQUARE_WH); 
 	y = (int)(ym / BOARD_SQUARE_WH);
 
-
-	for( int i = 0; i < 32; i++ )
-	{
-		if( listPieces[ i ]->isSelected && listPieces[ i ]->inPlay  )
-		{
+	for( i = 0; i < 32; i++ ) {
+		if( listPieces[ i ]->isSelected && listPieces[ i ]->inPlay  ) {
 			controller->MovePiece( listPieces[ i ]->xpos, listPieces[ i ]->ypos, x, y );
-			/*
-			if( CheckMove( listPieces[ i ], x, y ) ) {
-				if( !KingCheckSimulate( listPieces[ i ], x, y ) ) {
-					FinalMovePiece( listPieces[ i ], x, y );
-					if( listPieces[ i ]->color == COLOR_WHITE ) {
-						if( KingCheckMate( COLOR_BLACK ) )
-							printf("check mate\n");
-					} else {
-						if( KingCheckMate( COLOR_WHITE ) )
-							printf("check mate\n");
-					}
-				}
-			}
-
-			listPieces[ i ]->isSelected = false;
-			*/
-
 			listPieces[ i ]->isSelected = false;
 			goto done;
 		}	
 	}
 
-	for( int i = 0; i < 32; i++ )
-	{
-		//if( !listPieces[ i ]->inPlay )
-		//	break;
-
+	for( int i = 0; i < 32; i++ ) {
 		if( x == listPieces[ i ]->xpos && y == listPieces[ i ]->ypos && listPieces[ i ]->inPlay )
 		{
 			listPieces[ i ]->isSelected = true;
@@ -254,7 +225,8 @@ void Game::MouseInput( const int &xm, const int &ym )
 		}
 	}
 
-	done:
+done:
+
 	return;
 }
 
@@ -273,4 +245,3 @@ void Game::AddPiece( Piece_t **listPieces, const int &i, const int &x, const int
 	listPieces[ i ]->color = color;
 	listPieces[ i ]->isInitialState = true;
 }
-

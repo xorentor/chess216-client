@@ -57,14 +57,14 @@ private:
 	// controller
 	const int *socketDesc;
 	pthread_mutex_t *mutex;
-	Game_t games[ MAX_GAMES ];
+	struct game_s games[ MAX_GAMES ];
 
 	// game
 	char currentGameId;
 
 	// packets
 	PacketData_t pd;
-	LoginData_t ld;
+	struct logindata_s ld;
 	JoinData_t jd;
 	GameSitData_t sd;
 	MovePieceData_t md;

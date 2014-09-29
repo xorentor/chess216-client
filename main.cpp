@@ -1,22 +1,3 @@
-#include <iostream>
-#include <vector>
-#include <stdlib.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <stdarg.h>
-
-#include <gtk/gtk.h>
-#include "SDL/SDL.h"
-#include "SDL/SDL_syswm.h"
-#include <SDL/SDL_image.h>
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h> 
-
 #include "common.h"
 #include "client.h"
 #include "controller.h"
@@ -66,8 +47,7 @@ static int sdl_init( Controller *controller, GFX *gfx ) {
     SDL_Surface *screen;
     std::vector<Image_t *> *images;
 
-	if( !gfx->Init() )
-	{
+	if( !gfx->Init() ) {
 		LM_ERR("GFX init failed");
 		exit(0);
 	}
@@ -130,12 +110,16 @@ static void *game_thread( void *controller ) {
 
    	gtk_idle_add( sdl_loop, (void *)gfx ); 
    	gtk_main();
+
+    return NULL;
 }
 
 static void *listener_thread( void *controller ) {
 	int buffLen;
 	char readBuffer[ BUFFER_LEN ];
     Controller *ctl = (Controller *)controller;
+	char gamename[ 64 ];
+    PacketData_t pd;
 
 	while( ctl->Stop() != 1 ) {
         buffLen = read( *( ctl->GetDescriptor() ), readBuffer, BUFFER_LEN );
@@ -144,73 +128,67 @@ static void *listener_thread( void *controller ) {
             break;
 		}
 			// TODO: this could be removed if we point this structure to readBuffer
-        		PacketData_t pd;
+            memset( &pd, 0, sizeof( pd ) );
 		 	memcpy( &pd.command, &readBuffer, sizeof( pd.command ) );
-                	pd.data = readBuffer + sizeof( pd.command );
+           	pd.data = readBuffer + sizeof( pd.command );
 
-			switch( (int )pd.command ) {
+			switch( (char )pd.command ) {
 				case CMD_LOGIN:
-					if( (int )( (ServerByte_t *)pd.data )->byte == CMD_LOGIN_PARAM_DETAILS_OK ) {
+					if( *(char *)pd.data == CMD_LOGIN_PARAM_DETAILS_OK ) {
 						ctl->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_OK ); 
 						ctl->GTKLoggedUser( ( (GameLoginSrv_t *)pd.data )->username );
-
 				 		ctl->GTKSetElo( ( ( GameLoginSrv_t *)pd.data )->elorating );
 						ctl->GTKHideLogin();
-					}
-
-					else if( (int )( (ServerByte_t *)pd.data )->byte == CMD_LOGIN_PARAM_DETAILS_ERR ) {
-						ctl->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_ERR ); }
+					} else if( *(char *)pd.data == CMD_LOGIN_PARAM_DETAILS_ERR ) {
+						ctl->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_ERR ); 
+                    }
 					break;
 				case CMD_GAME_CREATE:
-
-					if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_CREATE_PARAM_OK ) {
-						char gamename[ 0x20 ];
-						sprintf( gamename, "Game %d", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
-						ctl->GTKAppendGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
+					if( *(char *)(pd.data) == CMD_GAME_CREATE_PARAM_OK ) {
+						memset( gamename, 0, sizeof( gamename ) );
+						sprintf( gamename, "Game %d", *(char *)(pd.data+1) ); 
+						ctl->GTKAppendGameListItem( gamename, (char *)(pd.data+1) );
 						ctl->GTKSysMsg( CMD_GAME_CREATE_PARAM_OK ); 
-					} 
-					else if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_CREATE_PARAM_DELETE ) {
-						LM_INFO("delete game %d\n", (int )((ServerTwoBytes_t *)pd.data )->byte1 );
-						char gamename[ 0x20 ];
-						sprintf( gamename, "Game %d", (int )( (ServerTwoBytes_t *)pd.data )->byte1 ); 
-						ctl->GTKRemoveGameListItem( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1 );
-	
-}	
+					} else if( *(char *)(pd.data) == CMD_GAME_CREATE_PARAM_DELETE ) {
+						LM_INFO("delete game %d\n", *(char *)(pd.data+1) );
+						memset( gamename, 0, sizeof( gamename ) );
+						sprintf( gamename, "Game %d", *(char *)(pd.data+1) ); 
+						ctl->GTKRemoveGameListItem( gamename, (char *)(pd.data+1));
+                    }	
 					break;
 				case CMD_GAME_JOIN:
-					if( (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) {
-						char gamename[ 0x20 ];
-						sprintf( gamename, "Game %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte1 );
-						ctl->GTKSetGamename( gamename, &( (ServerTwoBytes_t *)pd.data )->byte1, false );
+					if( *(char *)pd.data == CMD_GAME_JOIN_PARAM_OK ) {
+						memset( gamename, 0, sizeof( gamename ) );
+						sprintf( gamename, "Game %d\n", *(char *)(pd.data+1) );
+						ctl->GTKSetGamename( gamename, (char *)(pd.data+1), false );
 						ctl->GTKSetButtonSitActive();
-					} else { LM_INFO("param: %d\n", (int )( (ServerTwoBytes_t *)pd.data )->byte0 == CMD_GAME_JOIN_PARAM_OK ) ; } 
+					} else { LM_INFO("Unable to join gameId: %d\n", *(char *)(pd.data+1) ); } 
 					break;
 				case CMD_GAME_SIT:
-					if( (int )( (GameSitServerData_t *)pd.data )->slot == COLOR_WHITE ) {
+					if( (char )( (GameSitServerData_t *)pd.data )->slot == COLOR_WHITE ) {
 						ctl->GTKSetPlayer1( ( (GameSitServerData_t *)pd.data )->username );
                         LM_INFO( "White sit OK" );
-					}
-					else if( (int )( (GameSitServerData_t *)pd.data )->slot == COLOR_BLACK ) {
+					} else if( (char )( (GameSitServerData_t *)pd.data )->slot == COLOR_BLACK ) {
 						ctl->GTKSetPlayer2( ( (GameSitServerData_t *)pd.data )->username );
                         LM_INFO( "Black sit OK" );
 					}
 
-					if( (int )( (GameSitServerData_t *)pd.data )->gameBegin == CMD_GAME_BEGIN_PARAM_OK ) {
+					if( (char )( (GameSitServerData_t *)pd.data )->gameBegin == CMD_GAME_BEGIN_PARAM_OK ) {
 						ctl->GTKSysMsg( CMD_GAME_BEGIN_PARAM_OK ); 
 					}
 					break;
 				case CMD_GAME_MOVEPIECE:
-					LM_INFO("color to move: %d\n", (int )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE );
-					if( (int )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE )
+					LM_INFO("color to move: %d\n", (char )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE );
+					if( (char )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE )
 						ctl->GTKSysMsg( CMD_GAME_PARAM_NEXTWHITE ); 
 					else
 						ctl->GTKSysMsg( CMD_GAME_PARAM_NEXTBLACK ); 
-					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_W )
+					if( (char )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_W )
 						ctl->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_W ); 
-					if( (int )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_B )
+					if( (char )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_B )
 						ctl->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_B ); 
 
-					game.FinalMovePiece( (int )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (int )( (GamePieceMoveSrv_t *)pd.data )->xdest, (int )( (GamePieceMoveSrv_t *)pd.data )->ydest );
+					game.FinalMovePiece( (char )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (char )( (GamePieceMoveSrv_t *)pd.data )->xdest, (char )( (GamePieceMoveSrv_t *)pd.data )->ydest );
 					break;
 
 				case CMD_GAME_INITIAL_PIECES:
@@ -218,31 +196,26 @@ static void *listener_thread( void *controller ) {
 					break;
 
 				case CMD_GAME_STAND:
- 					if( (int )( (GameStandServerData_t *)pd.data )->param == CMD_GAME_STAND_PARAM_OK ) {
- 					if( (int )( (GameStandServerData_t *)pd.data )->slot == COLOR_WHITE ) {
-						ctl->GTKSetPlayer1( "Sit" );
-					}
-					else if( (int )( (GameStandServerData_t *)pd.data )->slot == COLOR_BLACK ) {
-						ctl->GTKSetPlayer2( "Sit" );
-					}
+ 					if( (char )( (GameStandServerData_t *)pd.data )->param == CMD_GAME_STAND_PARAM_OK ) {
+    					if( (char )( (GameStandServerData_t *)pd.data )->slot == COLOR_WHITE ) {
+	    					ctl->GTKSetPlayer1( "Sit" );
+		    			}
+				    	else if( (char )( (GameStandServerData_t *)pd.data )->slot == COLOR_BLACK ) {
+			    			ctl->GTKSetPlayer2( "Sit" );
+					    }
 					}
 					break;
-				case CMD_GAME_TIMER:					
+				case CMD_GAME_TIMER:
 					ctl->GTKSetTimer( ( (GameTimerSrv_t *)pd.data )->p1_min, ( (GameTimerSrv_t *)pd.data )->p1_sec, ( (GameTimerSrv_t *)pd.data )->p2_min, ( (GameTimerSrv_t *)pd.data )->p2_sec );
 					break;
 				case CMD_GAME_FINISHED:
 					LM_INFO( "game finished" );
-					switch( (int )( (ServerTwoBytes_t *)pd.data )->byte0 ) {
+					switch( *(char *)pd.data ) {
 						case CMD_GAME_FINISHED_DRAW:
-
 							break;
-
 						case COLOR_WHITE:
-
 							break;
-
 						case COLOR_BLACK:
-
 							break;
 					}
 
@@ -258,6 +231,8 @@ static void *listener_thread( void *controller ) {
 					break;
 			}
 	}
+
+    return NULL;
 }
 
 int main( int argc, char *argv[] ) {

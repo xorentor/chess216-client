@@ -1,14 +1,3 @@
-#include <vector>
-#include <iostream>
-#include <malloc.h>
-#include <assert.h>
-
-#include "SDL/SDL.h"
-#include "SDL/SDL_syswm.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <SDL/SDL_image.h>
-
 #include "common.h"
 #include "client.h"
 #include "controller.h"
@@ -33,23 +22,23 @@ GFX::~GFX()
 bool GFX::Init()
 {
 	if( SDL_Init( SDL_INIT_EVERYTHING ) == -1 ) {
-	       	return false; }
+	    return false;   
+    }
 
-    	screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
+    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_BPP, SDL_SWSURFACE );
 
-    	if( screen == NULL )
-		return false;
+    if( screen == NULL ) {
+	    return false;
+    }
 
-	//board = NULL; //n->w ->hessBoard( );
-
-    	SDL_WM_SetCaption( "Chess216", NULL );
+    SDL_WM_SetCaption( "Chess216", NULL );
 
 	// load pieces
 	LoadImage( "gfx/pieces.png" );
 
 	MapPieces();		
 
-    	return true;
+    return true;
 }
 
 void GFX::LoadImage( const char *filename )
@@ -60,8 +49,7 @@ void GFX::LoadImage( const char *filename )
 
     	loadedImage = IMG_Load( filename );
 	
-    	if( loadedImage != NULL )
-    	{
+    	if( loadedImage != NULL ) {
         	optimizedImage = SDL_DisplayFormat( loadedImage );
 
         	SDL_FreeSurface( loadedImage );
@@ -110,21 +98,21 @@ void GFX::PushImage( SDL_Surface *image )
 
 void GFX::ApplySurface( const int &x, const int &y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip = NULL )
 {
-    	SDL_Rect offset;
+    SDL_Rect offset;
 
-    	offset.x = x;
-    	offset.y = y;
+    offset.x = x;
+    offset.y = y;
 
-    	if( SDL_BlitSurface( source, clip, destination, &offset ) != 0 )
+    if( SDL_BlitSurface( source, clip, destination, &offset ) != 0 ) {
 		std::cout << "fail blit " << std::endl;
+    }
 }
 
 bool GFX::Flip()
 {
-    	if( SDL_Flip( screen ) == -1 )
-    	{
+   	if( SDL_Flip( screen ) == -1 ) {
 		return false;
-    	}
+    }
 
 	return true;
 }
@@ -136,10 +124,8 @@ void GFX::ClearScreen()
 
 void GFX::CleanImages()
 {
-	for( std::vector<Image_t *>::iterator it = images.begin(); it != images.end(); it++ )
-	{
-		if( !(*it)->inuse )
-		{
+	for( std::vector<Image_t *>::iterator it = images.begin(); it != images.end(); it++ ) {
+		if( !(*it)->inuse ) {
 			SDL_FreeSurface( (*it)->surface );
 			(*it)->surface = NULL;
 			delete *it;
@@ -148,42 +134,18 @@ void GFX::CleanImages()
 	}
 }
 
-void GFX::MouseInput( const int &xm, const int &ym )
-{
-	/*
-	int x, y;
-
-	x = (int)(xm / BOARD_SQUARE_WH); 
-	y = (int)(ym / BOARD_SQUARE_WH);
-
-	if( x < 0 || x > 7 || y < 0 || y > 7 )
-		return;
-
-	fieldRect.x = BOARD_SQUARE_WH * x;
-	fieldRect.y = BOARD_SQUARE_WH * y;
-	fieldRect.w = BOARD_SQUARE_WH;
-	fieldRect.h = BOARD_SQUARE_WH;
-
-	fieldSelected = true;
-	*/
-}
-
 void GFX::Run( Piece_t **pieces )
 {
 	ClearScreen();
-
 	GenerateBoard( false );
-
 	Update( pieces );
 }
 
 void GFX::Update( Piece_t **pieces )
 {
-	for( int i = 0; i < 32; i++ )
-	{
+	for( int i = 0; i < 32; i++ ) {
 		// highlight square
-		if( pieces[ i ]->isSelected )
-		{
+		if( pieces[ i ]->isSelected ) {
 			SDL_Rect fieldRect;
 			fieldRect.x = BOARD_SQUARE_WH * pieces[ i ]->xpos;
 			fieldRect.y = BOARD_SQUARE_WH * pieces[ i ]->ypos;
@@ -193,8 +155,9 @@ void GFX::Update( Piece_t **pieces )
 			SDL_FillRect( screen, &fieldRect, SDL_MapRGB( screen->format, 0, 128, 0 ) );
 		}
 		
-		if( pieces[ i ]->inPlay )
+		if( pieces[ i ]->inPlay ) {
 			ApplySurface( pieces[ i ]->x, pieces[ i ]->y, images[0]->surface, screen, pieces[ i ]->skin );
+        }
 	}
 }
 
@@ -202,10 +165,8 @@ bool GFX::GenerateBoard( const bool reverse )
 {
 	SDL_Rect board;
 
-	for( int i = 0; i < 8; i++ )
-	{
-		for( int j = 0; j < 8; j++ )
-		{
+	for( int i = 0; i < 8; i++ ) {
+		for( int j = 0; j < 8; j++ ) {
 			board.x = BOARD_SQUARE_WH * j;
 			board.y = BOARD_SQUARE_WH * i;
 			board.w = BOARD_SQUARE_WH;
@@ -213,22 +174,20 @@ bool GFX::GenerateBoard( const bool reverse )
 	
 			if( !reverse && !generateReversed )
 			{
-				if( j % 2 == 0 && i % 2 != 0 )
+				if( j % 2 == 0 && i % 2 != 0 ) {
 					SDL_FillRect( screen, &board, SDL_MapRGB( screen->format, DARK_COLOR_R, DARK_COLOR_G, DARK_COLOR_B ) );
-			
-				if( j % 2 != 0 && i % 2 == 0 )
+			    }
+				if( j % 2 != 0 && i % 2 == 0 ) {
 					SDL_FillRect( screen, &board, SDL_MapRGB( screen->format, DARK_COLOR_R, DARK_COLOR_G, DARK_COLOR_B ) );
-
+                }
 				generateReversed = false;
-			} 
-			else 
-			{
-				if( j % 2 == 0 && i % 2 == 0 )
+			} else {
+				if( j % 2 == 0 && i % 2 == 0 ) {
 					SDL_FillRect( screen, &board, SDL_MapRGB( screen->format, DARK_COLOR_R, DARK_COLOR_G, DARK_COLOR_B ) );
-			
-				if( j % 2 != 0 && i % 2 != 0 )
+			    }
+				if( j % 2 != 0 && i % 2 != 0 ) {
 					SDL_FillRect( screen, &board, SDL_MapRGB( screen->format, DARK_COLOR_R, DARK_COLOR_G, DARK_COLOR_B ) );
-
+                }
 				generateReversed = true;
 			}
 		}
@@ -239,10 +198,12 @@ bool GFX::GenerateBoard( const bool reverse )
 
 bool GFX::SwapBoard( void )
 {
-	if( generateReversed )
+	if( generateReversed ) {
 		generateReversed = false;
-	else
+	} else {
 		generateReversed = true;
+    }
+
 	return( GenerateBoard( false ) );	
 }
 
@@ -257,10 +218,12 @@ void GFX::PieceDimension( const int &x, const int &y, const int &w, const int &h
 void GFX::MapPieces()
 {
 	SDL_Rect **pieces;	
+
 	pieces = (SDL_Rect **) malloc( sizeof(int) * 12 );
-	for( int i = 0; i < 12; i++ )
+	for( int i = 0; i < 12; i++ ) {
 		pieces[ i ] = new SDL_Rect;
-	
+	}
+
 	PieceDimension( 65, 66, 85, 91, pieces, BLACK_KING );
 	PieceDimension( 65, 213, 85, 91, pieces, WHITE_KING );
 	PieceDimension( 228, 68, 98, 89, pieces, BLACK_QUEEN );
@@ -275,9 +238,4 @@ void GFX::MapPieces()
 	PieceDimension( 918, 212, 60, 100, pieces, WHITE_PAWN );
 
 	mappedPieces = pieces;
-}
-
-void GFX::DrawPieces()
-{
-
 }

@@ -1,15 +1,34 @@
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <stdarg.h>
 #include <syslog.h>
+
 #include <gtk/gtk.h>
+
+#include "SDL/SDL.h"
+#include "SDL/SDL_syswm.h"
+#include <SDL/SDL_image.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h> 
 
 #define 	SCREEN_WIDTH 		720
 #define 	SCREEN_HEIGHT  		720
-#define 	SCREEN_BPP 		32
+#define 	SCREEN_BPP 		    32
 #define		BOARD_SQUARE_WH		90
 #define		DARK_COLOR_R		102
 #define		DARK_COLOR_G		102
 #define		DARK_COLOR_B		102
-#define		GENBOARD_F		0x1
-#define		GENBOARDR_F		0x2
+
+#define		GENBOARD_F		    0x1
+#define		GENBOARDR_F		    0x2
 
 #define		COLOR_WHITE		1
 #define 	COLOR_BLACK		2
@@ -33,7 +52,7 @@
 	MY_DPRINT( DP_INFO_PREFIX __VA_ARGS__);
 
 #define LM_ERR( ...) \
-	MY_DPRINT( DP_ERROR_PREFIX __VA_ARGS__);\
+	MY_DPRINT( DP_ERROR_PREFIX __VA_ARGS__ );\
     exit(0);
 
 #define LM_WARN( ...) \
@@ -89,8 +108,6 @@ enum
 	WHITE_PAWN
 };
 
-// ***  
-
 extern GtkWidget *text_login, *text_pass;
 extern GtkWidget *listGames, *listSpectators;
 extern GtkTreeSelection *selection;
@@ -98,101 +115,77 @@ extern GtkWidget *systemMsg, *buttonGamename;
 extern GtkWidget *buttonPlayer1, *buttonPlayer2;
 extern int quit;
 
-typedef struct Game_s
-{
+struct game_s {
 	int id;
 	char value[ 32 ];
-} Game_t;
+};
 
-typedef struct LoginData_s
-{
-        char username[ 32 ];
-        char password[ 32 ];
-} LoginData_t;
+struct logindata_s {
+    char username[ 32 ];
+    char password[ 32 ];
+};
 
-typedef struct MovePieceData_s
-{
+typedef struct MovePieceData_s {
 	char xsrc;
 	char ysrc;
 	char xdest;
 	char ydest;
 } MovePieceData_t;
 
-typedef struct GamePieceMoveSrv_s
-{
-        char pieceId;
-        char xdest;
-        char ydest;
+typedef struct GamePieceMoveSrv_s {
+    char pieceId;
+    char xdest;
+    char ydest;
 	char checkMate;
 	char next;
 } GamePieceMoveSrv_t;
 
-typedef struct JoinData_s
-{
+typedef struct JoinData_s {
 	char gameId;
 } JoinData_t;
 
-typedef struct GameSitData_s
-{
+typedef struct GameSitData_s {
 	char gameId;
 	char slot;
 } GameSitData_t;
 
-typedef struct GameSitServerData_s
-{
+typedef struct GameSitServerData_s {
 	char slot;
 	char username[ 32 ];
 	char gameBegin;
 } GameSitServerData_t;
 
-typedef struct GameStandServerData_s
-{
-        char param;
-        char slot;
+typedef struct GameStandServerData_s {
+    char param;
+    char slot;
 } GameStandServerData_t;
 
-typedef struct GameStandData_s
-{
-        char gameId;
-        char slot;
+typedef struct GameStandData_s {
+    char gameId;
+    char slot;
 } GameStandData_t;
 
-typedef struct PacketData_s
-{
-        char command;
-	char length;
-        void *data;
+typedef struct PacketData_s {
+    char command;
+    char length;
+    void *data;
 } PacketData_t;
 
-typedef struct ServerByte_s
-{
-	char byte;
-} ServerByte_t;
-
-typedef struct ServerTwoBytes_s
-{
-        char byte0;
-        char byte1;
-} ServerTwoBytes_t;
-
-typedef struct GameTimerSrv_s
-{
-        char p1_min;
-        char p1_sec;
-        char p2_min;
-        char p2_sec;
+typedef struct GameTimerSrv_s {
+    char p1_min;
+    char p1_sec;
+    char p2_min;
+    char p2_sec;
 } GameTimerSrv_t;
 
-typedef struct GameLoginSrv_s
-{   
-         char param;
-         char username[ 32 ];
-         double elorating;
+typedef struct GameLoginSrv_s {   
+    char param;
+    char username[ 32 ];
+    double elorating;
 } GameLoginSrv_t;
 
-typedef struct EloSrv_s
-{
-        int elo_value;
+typedef struct EloSrv_s {
+    int elo_value;
 } EloSrv_t;
 
 extern void dprint( const char * format, ... );

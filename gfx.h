@@ -19,14 +19,12 @@ public:
 
 	bool Init();
 	SDL_Rect **GetPieces() { return mappedPieces; };
-	void MouseInput( const int &x, const int &y ); 
 	void Run( Piece_t **pieces );
 	bool SwapBoard( void );
 	SDL_Surface *GetScreen() { return screen; }
 	std::vector<Image_t *> *GetImages() { return &images; }
 	void ApplySurface( const int &x, const int &y, SDL_Surface* source, SDL_Surface* destination, SDL_Rect* clip );  
 	bool Flip();
-	void DrawPieces();
 	void SDL_MoveXY( SDL_Surface *srf, int top, int left );
 
 private:

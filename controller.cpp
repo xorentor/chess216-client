@@ -1,12 +1,3 @@
-#include <gtk/gtk.h>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-
-#include <stdlib.h>
-#include <stdio.h>
-#include <memory.h>
-#include <string.h>
-
 #include "common.h"
 #include "client.h"
 #include "controller.h"
@@ -24,29 +15,21 @@ Controller::~Controller()
 
 void Controller::ClientLogin( const char *user, const char *pass )
 {
+    unsigned char hashpass[ 32 ];
+
 	memset( &pd, 0, sizeof( pd ) );
 	memset( &ld, 0, sizeof( ld ) );
 
-	if( strlen( user ) < 2 || strlen( pass ) < 2 )
+	if( strlen( user ) < 2 || strlen( pass ) < 2 ) {
 		return;
+    }
 
-/*
-	command = (char )CMD_LOGIN;
-	memset( output, 0, sizeof( output ) );
-
-	memcpy( output, &command, sizeof( command ) );
-	memcpy( output + 1, user, strlen( user ) );
-	memcpy( output + 33, pass, strlen( pass ) );
-*/
-
-        unsigned char hashpass[ 32 ];
-        SHA256_CTX ctx;
-        sha256_init( &ctx );
-        sha256_update( &ctx, (unsigned char *)pass, strlen( pass ) );
-        sha256_final( &ctx, hashpass );
+    SHA256_CTX ctx;
+    sha256_init( &ctx );
+    sha256_update( &ctx, (unsigned char *)pass, strlen( pass ) );
+    sha256_final( &ctx, hashpass );
 
 	pd.command = (char )CMD_LOGIN;
-
 	pd.data = &ld;
 	memcpy( &ld.username, user, strlen( user ) );
 	memcpy( &ld.password, hashpass, sizeof( hashpass ) );
@@ -57,9 +40,7 @@ void Controller::ClientLogin( const char *user, const char *pass )
 void Controller::ClientGameCreate()
 {
 	memset( &pd, 0, sizeof( pd ) );
-
 	pd.command = (char )CMD_GAME_CREATE;
-
 	client.Send( socketDesc, &pd );
 }
 
@@ -136,7 +117,7 @@ void Controller::RemoveGame( const char *str, void *byte )
 	for( int i = 0; i < MAX_GAMES; i++ ) {
 		if( games[ i ].id > 0 ) {
 			if( games[ i ].id == (int ) *(char *)byte ) {
-				memset( &games[ i ], 0, sizeof( Game_t ) );
+				memset( &games[ i ], 0, sizeof( struct game_s ) );
 				return;
 			}
 		}

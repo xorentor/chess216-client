@@ -1,12 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h> 
-#include <memory.h>
-
 #include "common.h"
 #include "client.h"
 
@@ -32,10 +23,10 @@ int Client::Send( const int *sd, PacketData_t *pd )
 		case CMD_LOGIN:
 			// length
 			// TODO: check this on server side
-			memset( output + sizeof( pd->command ),  (char )( sizeof( ( (LoginData_t *)pd->data )->username ) + sizeof( ( (LoginData_t *)pd->data )->password ) ), sizeof( pd->length ) );
+			memset( output + sizeof( pd->command ),  (char )( sizeof( ( (struct logindata_s *)pd->data )->username ) + sizeof( ( (struct logindata_s *)pd->data )->password ) ), sizeof( pd->length ) );
 			// data
-			memcpy( output + initLen, &( (LoginData_t *)pd->data )->username, strlen( ( (LoginData_t *)pd->data )->username ) );
-			memcpy( output + initLen + sizeof( ( (LoginData_t *)pd->data )->username ), &( (LoginData_t *)pd->data )->password, strlen( ( (LoginData_t *)pd->data )->password ) );
+			memcpy( output + initLen, &( (struct logindata_s *)pd->data )->username, strlen( ( (struct logindata_s *)pd->data )->username ) );
+			memcpy( output + initLen + sizeof( ( (struct logindata_s *)pd->data )->username ), &( (struct logindata_s *)pd->data )->password, strlen( ( (struct logindata_s *)pd->data )->password ) );
 			break;
 		case CMD_GAME_CREATE:
 			// no data			
@@ -61,8 +52,12 @@ int Client::Send( const int *sd, PacketData_t *pd )
 	}
 
 	n = write( *sd, output, BUFFER_LEN );
+    LM_INFO( "Bytes sent %d\n", n );
+
+    return 0;
 }
 
 int Client::Receive()
 {
+    return 0;
 }

@@ -1,4 +1,4 @@
-#include <memory.h>
+#include "common.h"
 #include "sha256.h"
 
 uint k[64] = {

@@ -1,10 +1,3 @@
-#include <gtk/gtk.h>
-#include "SDL/SDL.h"
-#include "SDL/SDL_syswm.h"
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-#include <SDL/SDL_image.h>
-
 #include "common.h"
 #include "client.h"
 #include "controller.h"
@@ -81,12 +74,12 @@ void GTK::CreateGame( void *gtk )
 
 void GTK::JoinGame( void *gtk )
 {
-  	GtkListStore *store;
+  	//GtkListStore *store;
   	GtkTreeModel *model;
   	GtkTreeIter  iter;
       	char *row;
 
-  	store = GTK_LIST_STORE( gtk_tree_view_get_model( GTK_TREE_VIEW( listGames ) ) );
+  	//store = GTK_LIST_STORE( gtk_tree_view_get_model( GTK_TREE_VIEW( listGames ) ) );
   	model = gtk_tree_view_get_model( GTK_TREE_VIEW( listGames ) );
 
   	if( gtk_tree_model_get_iter_first( model, &iter ) == FALSE )
