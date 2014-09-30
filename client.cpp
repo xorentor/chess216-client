@@ -9,7 +9,9 @@ Client::~Client()
 {
 }
 
-int Client::Send( const int *sd, PacketData_t *pd )
+#define CPYDTA( T )\
+    memcpy( output + initLen, pd->data, sizeof( T ) );
+int Client::Send( const int sd, struct packetdata_s *pd )
 {
 	int n;
 	int initLen;
@@ -21,37 +23,26 @@ int Client::Send( const int *sd, PacketData_t *pd )
 
 	switch( (int )pd->command ) {
 		case CMD_LOGIN:
-			// length
-			// TODO: check this on server side
-			memset( output + sizeof( pd->command ),  (char )( sizeof( ( (struct logindata_s *)pd->data )->username ) + sizeof( ( (struct logindata_s *)pd->data )->password ) ), sizeof( pd->length ) );
-			// data
-			memcpy( output + initLen, &( (struct logindata_s *)pd->data )->username, strlen( ( (struct logindata_s *)pd->data )->username ) );
-			memcpy( output + initLen + sizeof( ( (struct logindata_s *)pd->data )->username ), &( (struct logindata_s *)pd->data )->password, strlen( ( (struct logindata_s *)pd->data )->password ) );
+            CPYDTA( struct logindata_s );
 			break;
 		case CMD_GAME_CREATE:
 			// no data			
 			break;
 		case CMD_GAME_JOIN:
-			memcpy( output + initLen, &( (JoinData_t *)pd->data )->gameId, sizeof( ( (JoinData_t *)pd->data )->gameId ) );
+			CPYDTA( struct joindata_s );
 			break;
 		case CMD_GAME_SIT:
-			memcpy( output + initLen, &( (GameSitData_t *)pd->data )->gameId, sizeof( ( (GameSitData_t *)pd->data )->gameId ) );
-			memcpy( output + initLen + sizeof( ( (GameSitData_t *)pd->data )->gameId ), &( (GameSitData_t *)pd->data )->slot, sizeof( ( (GameSitData_t *)pd->data )->slot ) );
+			CPYDTA( struct gamesitdata_s );
 			break;
 		case CMD_GAME_MOVEPIECE:
-			memcpy( output + initLen, &( (MovePieceData_t *)pd->data )->xsrc, sizeof( ( (MovePieceData_t *)pd->data )->xsrc ) );
-			memcpy( output + initLen + 1, &( (MovePieceData_t *)pd->data )->ysrc, sizeof( ( (MovePieceData_t *)pd->data )->ysrc ) );
-			memcpy( output + initLen + 2, &( (MovePieceData_t *)pd->data )->xdest, sizeof( ( (MovePieceData_t *)pd->data )->xdest ) );
-			memcpy( output + initLen + 3, &( (MovePieceData_t *)pd->data )->ydest, sizeof( ( (MovePieceData_t *)pd->data )->ydest ) );
+			CPYDTA( struct movepiecedata_s );
 			break;
 		case CMD_GAME_STAND:
-			memcpy( output + initLen, &( (GameStandData_t *)pd->data )->gameId, sizeof( ( (GameStandData_t *)pd->data )->gameId ) );
-			memcpy( output + initLen + sizeof( ( (GameStandData_t *)pd->data )->gameId ), &( (GameStandData_t *)pd->data )->slot, sizeof( ( (GameStandData_t *)pd->data )->slot ) );
-			printf("stand client.cpp\n");	
+			CPYDTA( struct gamestanddata_s );
 			break;
 	}
 
-	n = write( *sd, output, BUFFER_LEN );
+	n = write( sd, output, BUFFER_LEN );
     LM_INFO( "Bytes sent %d\n", n );
 
     return 0;

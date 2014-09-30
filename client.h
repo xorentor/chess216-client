@@ -7,7 +7,7 @@ public:
 	Client();
 	virtual ~Client();
 
-	int Send( const int *sd, PacketData_t *pd );
+	int Send( const int sd, struct packetdata_s *pd );
 	int Receive();
 };
 

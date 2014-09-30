@@ -1,0 +1,1 @@
+gcc *.cpp -Wall `pkg-config --cflags --libs gtk+-2.0` -m32 -O2  -lX11 -lXext -lSDL -lSDL_image -lSDLmain -o chess216

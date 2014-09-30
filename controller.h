@@ -17,10 +17,10 @@ public:
 
 	int Stop() { return quit; }
 	void SetStop() { quit = 1; }
-	const int *GetDescriptor() { return socketDesc; }
+	const int GetDescriptor() { return socketDesc; }
 
 	// sets
-	void SetDescriptor( const int *sd ) { this->socketDesc = sd; }
+	void SetDescriptor( const int sd ) { this->socketDesc = sd; }
 	void SetMutex( pthread_mutex_t *mt ) { this->mutex = mt; }
 	void SetGameListItem( int *gamesListItem ) { this->gamesListItem = gamesListItem; }
 	void SetGameCountColumns( int *gamesCountColumns ) { this->gamesCountColumns = gamesCountColumns; }
@@ -55,7 +55,7 @@ private:
 	char output[ BUFFER_LEN ];
 
 	// controller
-	const int *socketDesc;
+	int socketDesc;
 	pthread_mutex_t *mutex;
 	struct game_s games[ MAX_GAMES ];
 
@@ -63,11 +63,11 @@ private:
 	char currentGameId;
 
 	// packets
-	PacketData_t pd;
+	struct packetdata_s pd;
 	struct logindata_s ld;
-	JoinData_t jd;
-	GameSitData_t sd;
-	MovePieceData_t md;
+	struct joindata_s jd;
+	struct gamesitdata_s sd;
+	struct movepiecedata_s md;
 
 	void StoreGame( const char *str, void *byte );
 	void RemoveGame( const char *str, void *byte );

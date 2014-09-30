@@ -125,64 +125,64 @@ struct logindata_s {
     char password[ 32 ];
 };
 
-typedef struct MovePieceData_s {
+struct movepiecedata_s {
 	char xsrc;
 	char ysrc;
 	char xdest;
 	char ydest;
-} MovePieceData_t;
+};
 
-typedef struct GamePieceMoveSrv_s {
+struct gamepiecemovesrv_s {
     char pieceId;
     char xdest;
     char ydest;
 	char checkMate;
 	char next;
-} GamePieceMoveSrv_t;
+};
 
-typedef struct JoinData_s {
+struct joindata_s {
 	char gameId;
-} JoinData_t;
+};
 
-typedef struct GameSitData_s {
+struct gamesitdata_s {
 	char gameId;
 	char slot;
-} GameSitData_t;
+};
 
-typedef struct GameSitServerData_s {
+struct gamesitserverdata_s {
 	char slot;
 	char username[ 32 ];
 	char gameBegin;
-} GameSitServerData_t;
+};
 
-typedef struct GameStandServerData_s {
+struct gamestandserverdata_s {
     char param;
     char slot;
-} GameStandServerData_t;
+};
 
-typedef struct GameStandData_s {
+struct gamestanddata_s {
     char gameId;
     char slot;
-} GameStandData_t;
+};
 
-typedef struct PacketData_s {
+struct packetdata_s {
     char command;
     char length;
     void *data;
-} PacketData_t;
+};
 
-typedef struct GameTimerSrv_s {
+struct gametimersrv_s {
     char p1_min;
     char p1_sec;
     char p2_min;
     char p2_sec;
-} GameTimerSrv_t;
+};
 
-typedef struct GameLoginSrv_s {   
+struct gameloginsrv_s {   
     char param;
     char username[ 32 ];
     double elorating;
-} GameLoginSrv_t;
+};
 
 typedef struct EloSrv_s {
     int elo_value;

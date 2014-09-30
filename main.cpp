@@ -119,10 +119,10 @@ static void *listener_thread( void *controller ) {
 	char readBuffer[ BUFFER_LEN ];
     Controller *ctl = (Controller *)controller;
 	char gamename[ 64 ];
-    PacketData_t pd;
+    struct packetdata_s pd;
 
 	while( ctl->Stop() != 1 ) {
-        buffLen = read( *( ctl->GetDescriptor() ), readBuffer, BUFFER_LEN );
+        buffLen = read( ctl->GetDescriptor(), readBuffer, BUFFER_LEN );
 		if( buffLen <= 0 ) {
 		    ctl->SetStop();
             break;
@@ -136,8 +136,8 @@ static void *listener_thread( void *controller ) {
 				case CMD_LOGIN:
 					if( *(char *)pd.data == CMD_LOGIN_PARAM_DETAILS_OK ) {
 						ctl->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_OK ); 
-						ctl->GTKLoggedUser( ( (GameLoginSrv_t *)pd.data )->username );
-				 		ctl->GTKSetElo( ( ( GameLoginSrv_t *)pd.data )->elorating );
+						ctl->GTKLoggedUser( ( (struct gameloginsrv_s *)pd.data )->username );
+				 		ctl->GTKSetElo( ( ( struct gameloginsrv_s *)pd.data )->elorating );
 						ctl->GTKHideLogin();
 					} else if( *(char *)pd.data == CMD_LOGIN_PARAM_DETAILS_ERR ) {
 						ctl->GTKSysMsg( CMD_LOGIN_PARAM_DETAILS_ERR ); 
@@ -165,30 +165,33 @@ static void *listener_thread( void *controller ) {
 					} else { LM_INFO("Unable to join gameId: %d\n", *(char *)(pd.data+1) ); } 
 					break;
 				case CMD_GAME_SIT:
-					if( (char )( (GameSitServerData_t *)pd.data )->slot == COLOR_WHITE ) {
-						ctl->GTKSetPlayer1( ( (GameSitServerData_t *)pd.data )->username );
+                    #define GST(v)(((struct gamesitserverdata_s *)pd.data )->v)
+					if( GST(slot) == COLOR_WHITE ) {
+						ctl->GTKSetPlayer1( GST(username) );
                         LM_INFO( "White sit OK" );
-					} else if( (char )( (GameSitServerData_t *)pd.data )->slot == COLOR_BLACK ) {
-						ctl->GTKSetPlayer2( ( (GameSitServerData_t *)pd.data )->username );
+					} else if( GST(slot) == COLOR_BLACK ) {
+						ctl->GTKSetPlayer2( GST(username) );
                         LM_INFO( "Black sit OK" );
 					}
 
-					if( (char )( (GameSitServerData_t *)pd.data )->gameBegin == CMD_GAME_BEGIN_PARAM_OK ) {
+					if( GST(gameBegin) == CMD_GAME_BEGIN_PARAM_OK ) {
 						ctl->GTKSysMsg( CMD_GAME_BEGIN_PARAM_OK ); 
 					}
 					break;
 				case CMD_GAME_MOVEPIECE:
-					LM_INFO("color to move: %d\n", (char )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE );
-					if( (char )( (GamePieceMoveSrv_t *)pd.data )->next == COLOR_WHITE )
+                    #define GMP(v)(((struct gamepiecemovesrv_s *)pd.data )->v)
+					if( GMP(next) == COLOR_WHITE ) {
 						ctl->GTKSysMsg( CMD_GAME_PARAM_NEXTWHITE ); 
-					else
+					} else {
 						ctl->GTKSysMsg( CMD_GAME_PARAM_NEXTBLACK ); 
-					if( (char )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_W )
+                    }
+					if( GMP(checkMate) == CMD_GAME_PARAM_CHECKMATE_W )
 						ctl->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_W ); 
-					if( (char )( (GamePieceMoveSrv_t *)pd.data )->checkMate == CMD_GAME_PARAM_CHECKMATE_B )
+					if( GMP(checkMate) == CMD_GAME_PARAM_CHECKMATE_B )
 						ctl->GTKSysMsg( CMD_GAME_PARAM_CHECKMATE_B ); 
 
-					game.FinalMovePiece( (char )( (GamePieceMoveSrv_t *)pd.data )->pieceId , (char )( (GamePieceMoveSrv_t *)pd.data )->xdest, (char )( (GamePieceMoveSrv_t *)pd.data )->ydest );
+					game.FinalMovePiece( GMP(pieceId), GMP(xdest), GMP(ydest) );
+					LM_INFO("color to move: %d\n", GMP(next) == COLOR_WHITE );
 					break;
 
 				case CMD_GAME_INITIAL_PIECES:
@@ -196,17 +199,19 @@ static void *listener_thread( void *controller ) {
 					break;
 
 				case CMD_GAME_STAND:
- 					if( (char )( (GameStandServerData_t *)pd.data )->param == CMD_GAME_STAND_PARAM_OK ) {
-    					if( (char )( (GameStandServerData_t *)pd.data )->slot == COLOR_WHITE ) {
+                    #define GSSD(v)(((struct gamestandserverdata_s *)pd.data )->v)
+ 					if( (char )GSSD(param) == CMD_GAME_STAND_PARAM_OK ) {
+    					if( (char )GSSD(slot) == COLOR_WHITE ) {
 	    					ctl->GTKSetPlayer1( "Sit" );
 		    			}
-				    	else if( (char )( (GameStandServerData_t *)pd.data )->slot == COLOR_BLACK ) {
+				    	else if( (char )GSSD(slot) == COLOR_BLACK ) {
 			    			ctl->GTKSetPlayer2( "Sit" );
 					    }
 					}
 					break;
 				case CMD_GAME_TIMER:
-					ctl->GTKSetTimer( ( (GameTimerSrv_t *)pd.data )->p1_min, ( (GameTimerSrv_t *)pd.data )->p1_sec, ( (GameTimerSrv_t *)pd.data )->p2_min, ( (GameTimerSrv_t *)pd.data )->p2_sec );
+                    #define GTS(v)(((struct gametimersrv_s *)pd.data)->v)
+					ctl->GTKSetTimer( GTS(p1_min), GTS(p1_sec), GTS(p2_min), GTS(p2_sec) );
 					break;
 				case CMD_GAME_FINISHED:
 					LM_INFO( "game finished" );
@@ -244,7 +249,7 @@ int main( int argc, char *argv[] ) {
     pthread_mutex_init( &mutex, NULL );
 	sock_init( &sd );
 
-	controller.SetDescriptor( &sd );
+	controller.SetDescriptor( sd );
 	controller.SetMutex( &mutex );
 
     pthread_create( &(tid[ 0 ]), NULL, &game_thread, (void *)&controller );
