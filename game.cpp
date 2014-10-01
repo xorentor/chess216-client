@@ -22,14 +22,12 @@ const bool Game::Init(  SDL_Rect **skins, Controller *controller )
 	// 32 pointers to pieces
 	listPieces = (Piece_t **) malloc( sizeof(void*) * 32 );
 	// white Pawns
-	for( i = 0; i < 8; i++ )
-	{
+	for( i = 0; i < 8; i++ ) {
 		AddPiece( listPieces, i, i, 6, WHITE_PAWN, COLOR_WHITE );
 	}
 
 	// black Pawns
-	for(  ; i < 16; i++ )
-	{
+	for(  ; i < 16; i++ ) {
 		AddPiece( listPieces, i, (i-8), 1, BLACK_PAWN, COLOR_BLACK );
 	}
 
@@ -57,17 +55,16 @@ const bool Game::Init(  SDL_Rect **skins, Controller *controller )
 
 	// kings
 	AddPiece( listPieces, i++, 4, 7, WHITE_KING, COLOR_WHITE );
-	AddPiece( listPieces, i++, 4, 0, BLACK_KING, COLOR_BLACK );
+	AddPiece( listPieces, i, 4, 0, BLACK_KING, COLOR_BLACK );
 
 	return true;
 }
 
 void Game::SrvInitPieces( char *data )
 {
-	int index = 0;
+	int index = 0, i;
 
-	for( int i = 0; i < 32; i++ )
-	{
+	for( i = 0; i < 32; i++ ) {
 		listPieces[ i ]->xpos = data[ index ];
 		listPieces[ i ]->x = data[ index++ ] * BOARD_SQUARE_WH;
 		listPieces[ i ]->ypos = data[ index ];
@@ -105,13 +102,15 @@ void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )
 		}			
 	}
 	
-	if( piece == NULL )
+	if( piece == NULL ) {
 		return;
+    }
 
 	if( EnPassant( piece, xdest, ydest ) ) {
 		for( int i = 0; i < 32; i++ ) {
-			if( !listPieces[ i ]->inPlay )
+			if( !listPieces[ i ]->inPlay ) {
 				continue;
+            }
 
 			if( listPieces[ i ]->xpos == xdest && listPieces[ i ]->ypos == piece->ypos ) {
 				listPieces[ i ]->inPlay = false;
@@ -177,9 +176,10 @@ void Game::FinalMovePiece( const int &p, const int &xdest, const int &ydest )
 	}
 
 	for( int i = 0; i < 32; i++ ) {
-		if( !listPieces[ i ]->inPlay )
+		if( !listPieces[ i ]->inPlay ) {
 			continue;
-
+        }
+    
 		if( listPieces[ i ]->xpos == xdest && listPieces[ i ]->ypos == ydest && listPieces[ i ]->color != piece->color ) {
 			LM_INFO( "capture state piece: %d \n", listPieces[ i ]->ID );	
 			listPieces[ i ]->inPlay = false;
@@ -233,6 +233,10 @@ done:
 void Game::AddPiece( Piece_t **listPieces, const int &i, const int &x, const int &y, const int &skin, const int &color ) 
 {
 	listPieces[ i ] = (Piece_t *) malloc( sizeof(Piece_t) );
+    if( listPieces[ i ] == NULL ) {
+        LM_ERR( "malloc failed" );
+    }
+
 	listPieces[ i ]->skin = skins[ skin ];
 	listPieces[ i ]->x = BOARD_SQUARE_WH * x;
 	listPieces[ i ]->y = BOARD_SQUARE_WH * y;

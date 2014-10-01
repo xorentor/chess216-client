@@ -174,16 +174,17 @@ void Controller::GTKJoinGame( const char *row )
 
 void Controller::GTKSetGamename( const char *gameName, void *gameId, bool finished )
 {
-	if( finished )
+	if( finished ) {
 		currentGameId = 0;
-	else
-		currentGameId = *(char *)gameId;		// copy this
+    } else {
+		currentGameId = *(char *)gameId;
+    }
 	gtk_label_set_text( (GtkLabel *)buttonGamename, gameName );
 }
 
 void Controller::GTKSetTimer( const char p1min, const char p1sec, const char p2min, const char p2sec )
 {
-	char timer[ 16 ];
+	char timer[ 64 ];
 	LM_INFO("Timer: %d %d %d %d\n", p1min, p1sec, p2min, p2sec );
 
 	sprintf( timer, "%d:%d", p1min, p1sec );
@@ -246,7 +247,6 @@ void Controller::GTKSysMsg( const int &code )
 		case CMD_GAME_PARAM_NEXTBLACK:
 			SYS_TEXT( "Black to move" );
 			break;
-
 	}
 }
 
