@@ -12,11 +12,22 @@ GFX::GFX()
 	fieldSelected = false;
 	generatedBoard = 0;
 	generateReversed = 0;
-	mappedPieces = NULL;
+	pieces = NULL;
 }
 
 GFX::~GFX()
 {
+    int i;
+
+	for( i = 0; i < 12; i++ ) {
+		if( pieces[ i ] != NULL ) {
+            free( pieces[ i ] );
+        }
+	}
+
+    if( pieces != NULL ) {
+        free( pieces );
+    }
 }
 
 bool GFX::Init()
@@ -43,21 +54,21 @@ bool GFX::Init()
 
 void GFX::LoadImage( const char *filename )
 {
-    	SDL_Surface *loadedImage = NULL;
+    SDL_Surface *loadedImage = NULL;
 
-    	SDL_Surface *optimizedImage = NULL;
+    SDL_Surface *optimizedImage = NULL;
 
-    	loadedImage = IMG_Load( filename );
+    loadedImage = IMG_Load( filename );
 	
-    	if( loadedImage != NULL ) {
-        	optimizedImage = SDL_DisplayFormat( loadedImage );
+    if( loadedImage != NULL ) {
+       	optimizedImage = SDL_DisplayFormat( loadedImage );
 
-        	SDL_FreeSurface( loadedImage );
+       	SDL_FreeSurface( loadedImage );
 
-        	if( optimizedImage != NULL )
-        	{
+       	if( optimizedImage != NULL )
+       	{
 	            	SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, SDL_MapRGB( optimizedImage->format, 234, 10, 134 ) );
-        	}
+       	}
 	}
 	
 	//SDL_SetAlpha( optimizedImage, SDL_SRCALPHA, 150 );
@@ -207,35 +218,30 @@ bool GFX::SwapBoard( void )
 	return( GenerateBoard( false ) );	
 }
 
-void GFX::PieceDimension( const int &x, const int &y, const int &w, const int &h, SDL_Rect **pieces, const int &piece )
-{
-	(pieces[ piece ])->x = x;
-	(pieces[ piece ])->y = y;
-	(pieces[ piece ])->w = w;
-	(pieces[ piece ])->h = h;
-}
-
+#define PD( a, b, c, d, p )\
+    pieces[ p ]->x = a;\
+    pieces[ p ]->y = b;\
+    pieces[ p ]->w = c;\
+    pieces[ p ]->h = d;
 void GFX::MapPieces()
 {
-	SDL_Rect **pieces;	
+    int i;
 
-	pieces = (SDL_Rect **) malloc( sizeof(int) * 12 );
-	for( int i = 0; i < 12; i++ ) {
-		pieces[ i ] = new SDL_Rect;
+	pieces = (SDL_Rect **) malloc( sizeof(void*) * 12 );
+	for( i = 0; i < 12; i++ ) {
+		pieces[ i ] = (SDL_Rect *)malloc( sizeof( SDL_Rect ) );
 	}
 
-	PieceDimension( 65, 66, 85, 91, pieces, BLACK_KING );
-	PieceDimension( 65, 213, 85, 91, pieces, WHITE_KING );
-	PieceDimension( 228, 68, 98, 89, pieces, BLACK_QUEEN );
-	PieceDimension( 228, 212, 98, 89, pieces, WHITE_QUEEN );
-	PieceDimension( 411, 67, 69, 90, pieces, BLACK_ROOK );
-	PieceDimension( 411, 212, 69, 90, pieces, WHITE_ROOK );
-	PieceDimension( 567, 67, 89, 100, pieces, BLACK_BISHOP );
-	PieceDimension( 567, 212, 89, 100, pieces, WHITE_BISHOP );
-	PieceDimension( 738, 67, 82, 100, pieces, BLACK_KNIGHT );
-	PieceDimension( 738, 212, 82, 100, pieces, WHITE_KNIGHT );
-	PieceDimension( 918, 67, 60, 100, pieces, BLACK_PAWN );
-	PieceDimension( 918, 212, 60, 100, pieces, WHITE_PAWN );
-
-	mappedPieces = pieces;
+	PD( 65, 66, 85, 91, BLACK_KING );
+	PD( 65, 213, 85, 91, WHITE_KING );
+	PD( 228, 68, 98, 89, BLACK_QUEEN );
+	PD( 228, 212, 98, 89, WHITE_QUEEN );
+	PD( 411, 67, 69, 90, BLACK_ROOK );
+	PD( 411, 212, 69, 90, WHITE_ROOK );
+	PD( 567, 67, 89, 100, BLACK_BISHOP );
+	PD( 567, 212, 89, 100, WHITE_BISHOP );
+	PD( 738, 67, 82, 100, BLACK_KNIGHT );
+	PD( 738, 212, 82, 100, WHITE_KNIGHT );
+	PD( 918, 67, 60, 100, BLACK_PAWN );
+	PD( 918, 212, 60, 100, WHITE_PAWN );
 }

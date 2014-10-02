@@ -18,7 +18,7 @@ public:
 	virtual ~GFX();
 
 	bool Init();
-	SDL_Rect **GetPieces() { return mappedPieces; };
+	SDL_Rect **GetPieces() { return pieces; };
 	void Run( Piece_t **pieces );
 	bool SwapBoard( void );
 	SDL_Surface *GetScreen() { return screen; }
@@ -35,9 +35,8 @@ private:
 	void LoadImage( const char *filename );
 	void Update( Piece_t **pieces );
 	void ClearScreen();
-	void PieceDimension( const int &x, const int &y, const int &w, const int &h, SDL_Rect **pieces, const int &piece );
 
-	SDL_Rect **mappedPieces;
+	SDL_Rect **pieces;
 	bool fieldSelected;
 	std::vector<Image_t *> images;
 	SDL_Surface *screen;
